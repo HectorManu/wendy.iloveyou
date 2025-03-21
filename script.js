@@ -667,6 +667,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Para pruebas (eliminar en producción)
 // Descomentar para forzar que aparezca el ramo sin importar la fecha
-// setTimeout(() => {
-//     createYellowFlowersBouquet();
-// }, 1000);
+ setTimeout(() => {
+     createYellowFlowersBouquet();
+ }, 1000);
