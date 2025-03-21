@@ -510,7 +510,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const now = new Date();
         const tomorrow = new Date(now);
         tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(8, 35, 10, 0); // 10 segundos después de medianoche
+        tomorrow.setHours(8, 36, 10, 0); // 10 segundos después de medianoche
         
         const timeUntilMidnight = tomorrow - now;
         
