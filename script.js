@@ -9,6 +9,11 @@ const config = {
     }
 };
 
+const link = document.querySelector("link[rel='stylesheet']")
+if(link){
+    link.href = link.href.split("?")[0]+"?" + new Date().getTime();
+}
+
 // Estado de la aplicación
 let photosData = [];
 let currentSlide = 0;
