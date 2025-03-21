@@ -586,9 +586,7 @@ function createYellowFlowersBouquet() {
             
             // Posicionar pétalos en círculo
             const angle = (j / 8) * Math.PI * 2;
-            const distance = 20; // Distancia desde el centro
-            
-            // Posición calculada usando trigonometría
+            const distance = 30; // Aumentar la distancia de los pétalos desde el centro
             petal.style.transform = `translate(-50%, -50%) rotate(${angle}rad) translate(${distance}px, 0)`;
             
             // Animar pétalos con retraso basado en posición
@@ -611,7 +609,7 @@ function createYellowFlowersBouquet() {
     // Añadir mensaje
     const message = document.createElement('div');
     message.className = 'bouquet-message';
-    message.textContent = '¡Un ramo de flores amarillas para ti! ❤️';
+    message.textContent = '¡Un ramo de flores amarillas para ti mi vida de mi vida! ❤️';
     
     // Añadir botón para cerrar
     const closeButton = document.createElement('div');
