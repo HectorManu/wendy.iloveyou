@@ -1,12 +1,12 @@
 :root {
-    --primary-color: #ff69b4;
+    /*--primary-color: #ff69b4;
     --secondary-color: #9370db;
     --background-color: #fff0f5;
     --text-color: #4a4a4a;
     --shadow-color: rgba(147, 112, 219, 0.2);
     --gradient: linear-gradient(135deg, #ff69b4, #9370db);
     
-    /* Variables para San Valentín */
+    /* Variables para San Valentín 
     --valentine-primary: #ff1a5e;
     --valentine-secondary: #ff8da1;
     --valentine-background: #fff0f5;
@@ -851,7 +851,7 @@ body {
     .carousel-container {
         background: rgba(42, 26, 42, 0.95);
     }
-
+a
     .valentine-theme .counter-container,
     .valentine-theme .coming-soon,
     .valentine-theme .carousel-container {
