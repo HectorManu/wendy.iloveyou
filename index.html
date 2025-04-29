@@ -6,10 +6,13 @@
     <meta name="description" content="Una página especial para celebrar nuestro amor y contar el tiempo juntos">
     <title>Nuestro Amor</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos CSS separados para mejor rendimiento -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="proposal.css">
+    <link rel="stylesheet" href="special-events.css">
 </head>
 <body>
-    <div class="version-badge">Versión 1.9.01</div>
+    <div class="version-badge">Versión 2.0</div>
     
     <div class="flowers"></div>
     
@@ -38,15 +41,46 @@
         </button>
     </div>
 
-    <div class="coming-soon">
-        <h3>¡Próximamente!</h3>
-        <p>Estamos preparando un nuevo diseño aún más especial para celebrar nuestro amor.</p>
-        <div class="preview-image">
-            <i class="fas fa-heart fa-3x"></i>
+    <!-- Sección de propuesta -->
+    <div class="proposal-container" id="proposal-container" style="display: none;">
+        <div class="proposal-card">
+            <h3>¿Quieres ser mi novia?</h3>
+            <div class="proposal-image">
+                <i class="fas fa-heart-circle-check fa-3x"></i>
+            </div>
+            <div class="proposal-buttons">
+                <button class="proposal-btn yes-btn" id="yes-btn">SÍ</button>
+                <button class="proposal-btn no-btn" id="no-btn">NO</button>
+            </div>
+            <div class="proposal-message" id="proposal-message"></div>
         </div>
-        <p>¡Mantente atento para ver la nueva versión!</p>
     </div>
 
+    <div class="coming-soon">
+        <h3>Actualizaciones Futuras</h3>
+        <p>Estamos preparando nuevas sorpresas para celebrar nuestro amor.</p>
+        <div class="preview-image">
+            <i class="fas fa-gift fa-3x"></i>
+        </div>
+        <p>¡Mantente atenta para ver más momentos especiales!</p>
+    </div>
+
+    <footer class="footer">
+        <p>Creado con <i class="fas fa-heart"></i> para ti</p>
+        <p class="footer-date" id="current-date"></p>
+    </footer>
+
+    <!-- Scripts JS separados para mejor rendimiento -->
     <script src="script.js"></script>
+    <script src="proposal.js"></script>
+    <script src="special-events.js"></script>
+    <script>
+        // Actualizar fecha actual en el pie de página
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('es-ES', { 
+            day: 'numeric', 
+            month: 'long', 
+            year: 'numeric' 
+        });
+    </script>
 </body>
 </html>

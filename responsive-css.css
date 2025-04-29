@@ -1,0 +1,85 @@
+/* Estilos para el contenedor de confeti */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+/* Estilos para partículas de letras */
+.letter-particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+    filter: blur(1px);
+}
+
+/* Animación de pulso para partículas de letras */
+@keyframes pulse-letter {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.3);
+        opacity: 1;
+    }
+}
+
+/* Contenedor para cada letra */
+.letter-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+/* Estilos específicos para cada letra */
+.letter-w {
+    /* Color para la W */
+    --letter-color: #ff6b95;
+}
+
+.letter-ampersand {
+    /* Color para el & */
+    --letter-color: #7e57c2;
+}
+
+.letter-h {
+    /* Color para la H */
+    --letter-color: #00bcd4;
+}
+
+/* Media query para dispositivos pequeños */
+@media (max-width: 768px) {
+    .letter-container {
+        width: 80vw !important;
+        height: 80vw !important;
+    }
+    
+    .letter-particle {
+        /* Partículas más pequeñas en móviles */
+        width: 6px !important;
+        height: 6px !important;
+    }
+}
+
+/* Media query para dispositivos muy pequeños */
+@media (max-width: 480px) {
+    .letter-container {
+        width: 90vw !important;
+        height: 90vw !important;
+    }
+    
+    .letter-particle {
+        /* Partículas aún más pequeñas en móviles pequeños */
+        width: 4px !important;
+        height: 4px !important;
+    }
+}

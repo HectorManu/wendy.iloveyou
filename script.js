@@ -1,33 +1,40 @@
-// Configuración
+// Configuración principal
 const config = {
     startDate: '2024-11-24T00:00:00',
     photoBasePath: '/img/',
     photosJsonUrl: 'photos.json',
-    valentineDay: {
-        month: 1,  // Febrero (0-indexed)
-        day: 14
+    stardustOptions: {
+        enabled: true,
+        particleCount: 30, // Reducido para mejor rendimiento
+        colors: ['#ff6b95', '#7e57c2', '#00bcd4']
     }
 };
-
-const link = document.querySelector("link[rel='stylesheet']")
-if(link){
-    link.href = link.href.split("?")[0]+"?" + new Date().getTime();
-}
 
 // Estado de la aplicación
 let photosData = [];
 let currentSlide = 0;
-let heartColors = ['#ff69b4', '#da70d6', '#9370db', '#ff1493', '#ff69b4'];
-let valentineHeartColors = ['#ff1a5e', '#ff0042', '#ff4775', '#ff6666', '#ff1a5e'];
+let heartColors = ['#ff6b95', '#7e57c2', '#00bcd4', '#ff4081', '#9575cd'];
 let currentColorIndex = 0;
+let confettiAnimationId;
+
+// Actualizar CSS dinámicamente para evitar caché
+const link = document.querySelector("link[rel='stylesheet']");
+if (link) {
+    link.href = link.href.split("?")[0] + "?" + new Date().getTime();
+}
 
 // Elementos del DOM
 const carouselInner = document.getElementById('carousel-inner');
 const heartBtn = document.getElementById('heart-btn');
 const body = document.body;
-const flowers = document.querySelector('.flowers');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
+
+// Evento para el botón de corazón
+heartBtn.addEventListener('click', () => {
+    currentColorIndex = (currentColorIndex + 1) % heartColors.length;
+    heartBtn.style.color = heartColors[currentColorIndex];
+});
 
 // Función para cargar JSON de fotos
 async function loadPhotosData() {
@@ -118,87 +125,6 @@ function moveCarousel(direction) {
     carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
 }
 
-// Evento para el botón de corazón
-heartBtn.addEventListener('click', () => {
-    const colorsArray = isValentineDay() ? valentineHeartColors : heartColors;
-    currentColorIndex = (currentColorIndex + 1) % colorsArray.length;
-    heartBtn.style.color = colorsArray[currentColorIndex];
-});
-
-// Función para verificar si es San Valentín
-function isValentineDay() {
-    const today = new Date();
-    return today.getMonth() === config.valentineDay.month && 
-           today.getDate() === config.valentineDay.day;
-}
-
-// Función para aplicar tema de San Valentín
-function applyValentineTheme() {
-    if (isValentineDay()) {
-        body.classList.add('valentine-theme');
-        flowers.classList.add('valentine-flowers');
-        heartBtn.classList.add('pulse');
-        
-        // Crear corazones cayendo
-        createFallingHearts();
-    } else {
-        body.classList.remove('valentine-theme');
-        flowers.classList.remove('valentine-flowers');
-        heartBtn.classList.remove('pulse');
-        
-        // Remover corazones si existen
-        const fallingHearts = document.querySelector('.falling-hearts');
-        if (fallingHearts) {
-            fallingHearts.remove();
-        }
-    }
-}
-
-// Crear corazones animados para San Valentín
-function createFallingHearts() {
-    // Remover corazones existentes si hay
-    const existingHearts = document.querySelector('.falling-hearts');
-    if (existingHearts) {
-        existingHearts.remove();
-    }
-    
-    const heartsContainer = document.createElement('div');
-    heartsContainer.className = 'falling-hearts';
-    
-    // Crear múltiples corazones
-    for (let i = 0; i < 30; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        
-        // Posición aleatoria horizontal
-        const leftPos = Math.random() * 100;
-        heart.style.left = `${leftPos}%`;
-        
-        // Tamaño aleatorio
-        const size = Math.random() * 10 + 5;
-        heart.style.width = `${size}px`;
-        heart.style.height = `${size}px`;
-        
-        // Ajustar los pseudoelementos al tamaño
-        heart.style.setProperty('--heart-size', `${size}px`);
-        
-        // Velocidad aleatoria
-        const duration = Math.random() * 10 + 10;
-        heart.style.animationDuration = `${duration}s`;
-        
-        // Retraso aleatorio
-        const delay = Math.random() * 10;
-        heart.style.animationDelay = `${delay}s`;
-        
-        // Posición inicial aleatoria
-        heart.style.top = `${-size}px`;
-        
-        heartsContainer.appendChild(heart);
-    }
-    
-    body.appendChild(heartsContainer);
-}
-
 // Event listeners para swipe en el carrusel
 let touchStartX = 0;
 let touchEndX = 0;
@@ -226,320 +152,158 @@ function handleSwipe() {
 prevBtn.addEventListener('click', () => moveCarousel(-1));
 nextBtn.addEventListener('click', () => moveCarousel(1));
 
+// Manejar cambio de orientación
+window.addEventListener('orientationchange', () => {
+    setTimeout(updateCounter, 100);
+});
+
+// Crear animación de partículas brillantes (stardust) en forma de corazón
+function createStardustAnimation() {
+    if (!config.stardustOptions.enabled) return;
+    
+    // Eliminar si ya existe
+    const existingStardust = document.querySelector('.stardust-container');
+    if (existingStardust) {
+        existingStardust.remove();
+    }
+    
+    // Crear contenedor
+    const stardustContainer = document.createElement('div');
+    stardustContainer.className = 'stardust-container';
+    
+    body.appendChild(stardustContainer);
+    
+    // Crear partículas
+    for (let i = 0; i < config.stardustOptions.particleCount; i++) {
+        createStardustParticle(stardustContainer);
+    }
+}
+
+
+/// Crear una partícula de stardust
+function createStardustParticle(container) {
+    // Decidir aleatoriamente si crear un corazón o una partícula circular
+    const isHeart = Math.random() > 0.3; // 70% de probabilidad de ser corazón
+    
+    const particle = document.createElement('div');
+    
+    // Estilos base comunes
+    particle.style.position = 'absolute';
+    particle.style.pointerEvents = 'none';
+    
+    // Posición aleatoria
+    const posX = Math.random() * 100;
+    const posY = Math.random() * 100;
+    particle.style.left = `${posX}%`;
+    particle.style.top = `${posY}%`;
+    
+    // Color aleatorio
+    const colorIndex = Math.floor(Math.random() * config.stardustOptions.colors.length);
+    const color = config.stardustOptions.colors[colorIndex];
+    
+    if (isHeart) {
+        // Crear un corazón
+        particle.className = 'stardust-heart';
+        
+        // Tamaño aleatorio para el corazón
+        const size = Math.random() * 15 + 5; // 5-20px
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Configurar el color y el brillo
+        particle.style.backgroundColor = 'transparent'; // El fondo debe ser transparente
+        particle.innerHTML = `
+            <svg viewBox="0 0 24 24" width="${size}px" height="${size}px">
+                <path fill="${color}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+        `;
+        
+        // Aplicar filtro de brillo
+        const glow = Math.random() * 5 + 3; // 3-8px de brillo
+        particle.style.filter = `drop-shadow(0 0 ${glow}px ${color})`;
+    } else {
+        // Crear una partícula circular
+        particle.className = 'stardust-particle';
+        const size = Math.random() * 4 + 2; // 2-6px
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.borderRadius = '50%';
+        particle.style.backgroundColor = color;
+        
+        // Añadir brillo más intenso
+        const glow = size * 2;
+        particle.style.boxShadow = `0 0 ${glow}px ${glow/2}px ${color}`;
+    }
+    
+    // Animación de parpadeo
+    const duration = Math.random() * 5 + 3; // 3-8s
+    particle.style.animation = `twinkle ${duration}s infinite ease-in-out`;
+    particle.style.animationDelay = `${Math.random() * 5}s`;
+    
+    // Añadir al contenedor
+    container.appendChild(particle);
+}
+
 // Inicialización
 window.addEventListener('DOMContentLoaded', () => {
     loadPhotosData();
     updateCounter();
     setInterval(updateCounter, 1000);
     
-    // Aplicar tema de San Valentín si es necesario
-    applyValentineTheme();
+    // Crear animación de stardust
+    createStardustAnimation();
     
-    // Verificar San Valentín a medianoche
-    function checkValentineAtMidnight() {
-        const now = new Date();
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(0, 0, 10, 0); // 10 segundos después de medianoche
-        
-        const timeUntilMidnight = tomorrow - now;
-        
-        setTimeout(() => {
-            applyValentineTheme();
-            // Configurar el próximo chequeo
-            checkValentineAtMidnight();
-        }, timeUntilMidnight);
+    // Inicializar propuesta
+    if (window.proposalManager) {
+        window.proposalManager.init();
     }
     
-    checkValentineAtMidnight();
-});
-
-// Manejar cambio de orientación
-window.addEventListener('orientationchange', () => {
-    setTimeout(updateCounter, 100);
-});
-
-// Añadir esto al archivo script.js existente
-
-// Configuración para el día de las flores amarillas
-const yellowFlowersConfig = {
-    month: 2,  // Marzo (0-indexed)
-    day: 21
-};
-
-// Colores para el día de las flores amarillas
-let yellowFlowerHeartColors = ['#ffcc00', '#ffd700', '#ffdf7f', '#ffe066', '#ffeb99'];
-
-// Función para verificar si es el día de las flores amarillas (21 de marzo)
-function isYellowFlowersDay() {
-    const today = new Date();
-    return today.getMonth() === yellowFlowersConfig.month && 
-           today.getDate() === yellowFlowersConfig.day;
-}
-
-// Función para aplicar tema de flores amarillas
-function applyYellowFlowersTheme() {
-    if (isYellowFlowersDay()) {
-        body.classList.add('yellow-flowers-theme');
-        heartBtn.classList.add('pulse');
-        
-        // Cambiar el icono del corazón a una flor amarilla
-        heartBtn.innerHTML = '<span class="yellow-flower-icon">🌻</span>';
-        
-        // Crear flores amarillas cayendo
-        createFallingYellowFlowers();
-        
-        // Crear corazones especiales flotando
-        createFloatingHearts();
-        
-        // Mostrar mensaje especial
-        showYellowFlowersMessage();
-    } else {
-        body.classList.remove('yellow-flowers-theme');
-        
-        // Si no se está mostrando otro tema (como San Valentín), restaurar el icono del corazón
-        if (!isValentineDay() && heartBtn.innerHTML.includes('yellow-flower-icon')) {
-            heartBtn.innerHTML = '<i class="fas fa-heart"></i>';
-            heartBtn.classList.remove('pulse');
-        }
-        
-        // Remover flores si existen
-        const fallingFlowers = document.querySelector('.falling-flowers');
-        if (fallingFlowers) {
-            fallingFlowers.remove();
-        }
-        
-        // Remover corazones especiales si existen
-        const specialHearts = document.querySelectorAll('.special-heart');
-        specialHearts.forEach(heart => heart.remove());
-        
-        // Remover mensaje especial si existe
-        const specialMessage = document.querySelector('.yellow-flowers-message');
-        if (specialMessage) {
-            specialMessage.remove();
-        }
-    }
-}
-
-// Crear flores amarillas animadas
-function createFallingYellowFlowers() {
-    // Remover flores existentes si hay
-    const existingFlowers = document.querySelector('.falling-flowers');
-    if (existingFlowers) {
-        existingFlowers.remove();
+    // Inicializar eventos especiales si están disponibles
+    if (window.specialEvents) {
+        window.specialEvents.initializeSpecialEvents();
     }
     
-    const flowersContainer = document.createElement('div');
-    flowersContainer.className = 'falling-flowers';
-    
-    // Crear múltiples flores
-    for (let i = 0; i < 35; i++) {
-        const flower = document.createElement('div');
-        flower.className = 'flower';
+    // Añadir interacción para el movimiento de partículas con el mouse (reducido para mejorar rendimiento)
+    document.addEventListener('mousemove', (e) => {
+        if (!config.stardustOptions.enabled) return;
         
-        // Agregar pétalos
-        for (let j = 0; j < 6; j++) {
-            const petal = document.createElement('div');
-            petal.className = 'petal';
-            flower.appendChild(petal);
-        }
-        
-        // Posición aleatoria horizontal
-        const leftPos = Math.random() * 100;
-        flower.style.left = `${leftPos}%`;
-        
-        // Tamaño aleatorio
-        const size = Math.random() * 15 + 10;
-        flower.style.width = `${size}px`;
-        flower.style.height = `${size}px`;
-        
-        // Velocidad aleatoria (más lento que los corazones para que parezcan más livianas)
-        const duration = Math.random() * 15 + 12;
-        flower.style.animationDuration = `${duration}s`;
-        
-        // Retraso aleatorio
-        const delay = Math.random() * 40;
-        flower.style.animationDelay = `${delay}s`;
-        
-        flowersContainer.appendChild(flower);
-    }
-    
-    body.appendChild(flowersContainer);
-}
-
-// Crear corazones especiales flotando
-function createFloatingHearts() {
-    // Crear corazones que flotan en diferentes posiciones
-    for (let i = 0; i < 15; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'special-heart';
-        
-        // Corazón SVG
-        heart.innerHTML = `<svg width="${Math.random() * 25 + 15}" height="${Math.random() * 25 + 15}" viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>`;
-        
-        // Posición aleatoria
-        const leftPos = Math.random() * 90 + 5; // 5-95%
-        const topPos = Math.random() * 90 + 5; // 5-95%
-        heart.style.left = `${leftPos}%`;
-        heart.style.top = `${topPos}%`;
-        
-        // Animación con duración aleatoria
-        const duration = Math.random() * 6 + 4;
-        heart.style.animationDuration = `${duration}s`;
-        
-        // Retraso aleatorio
-        const delay = Math.random() * 2;
-        heart.style.animationDelay = `${delay}s`;
-        
-        body.appendChild(heart);
-    }
-}
-
-// Mostrar mensaje especial para el día de las flores amarillas
-function showYellowFlowersMessage() {
-    const existingMessage = document.querySelector('.yellow-flowers-message');
-    if (existingMessage) {
-        existingMessage.remove();
-    }
-    
-    const messageContainer = document.createElement('div');
-    messageContainer.className = 'counter-container yellow-flowers-message';
-    messageContainer.style.marginTop = '2rem';
-    
-    messageContainer.innerHTML = `
-        <h2>¡Día de las Flores Amarillas!</h2>
-        <div class="counter" style="font-size: 1.1rem; margin: 1rem 0;">
-            Hoy te regalo un campo de flores amarillas virtual, para celebrar nuestro amor 
-            de una manera especial. Estas flores nunca se marchitarán, justo como mi amor por ti. ❤️🌻
-        </div>
-    `;
-    
-    // Insertar después del contador principal
-    const counterContainer = document.querySelector('.counter-container');
-    counterContainer.parentNode.insertBefore(messageContainer, counterContainer.nextSibling);
-}
-
-// Evento para el botón de corazón en el tema de flores amarillas
-heartBtn.addEventListener('click', () => {
-    if (isYellowFlowersDay()) {
-        currentColorIndex = (currentColorIndex + 1) % yellowFlowerHeartColors.length;
-        heartBtn.style.color = yellowFlowerHeartColors[currentColorIndex];
-        
-        // Crear efecto de explosión de flores amarillas
-        createFlowerExplosion();
-    } else if (isValentineDay()) {
-        const colorsArray = valentineHeartColors;
-        currentColorIndex = (currentColorIndex + 1) % colorsArray.length;
-        heartBtn.style.color = colorsArray[currentColorIndex];
-    } else {
-        const colorsArray = heartColors;
-        currentColorIndex = (currentColorIndex + 1) % colorsArray.length;
-        heartBtn.style.color = colorsArray[currentColorIndex];
-    }
-});
-
-// Crear efecto de explosión de flores amarillas al hacer clic en el botón
-function createFlowerExplosion() {
-    const explosionContainer = document.createElement('div');
-    explosionContainer.style.position = 'fixed';
-    explosionContainer.style.left = '50%';
-    explosionContainer.style.top = '50%';
-    explosionContainer.style.transform = 'translate(-50%, -50%)';
-    explosionContainer.style.zIndex = '100';
-    explosionContainer.style.pointerEvents = 'none';
-    
-    // Crear múltiples partículas para la explosión
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        
-        // Estilo de la partícula
-        particle.style.position = 'absolute';
-        particle.style.width = '10px';
-        particle.style.height = '10px';
-        particle.style.backgroundColor = yellowFlowerHeartColors[Math.floor(Math.random() * yellowFlowerHeartColors.length)];
-        particle.style.borderRadius = '50%';
-        
-        // Posición inicial en el centro
-        particle.style.left = '0px';
-        particle.style.top = '0px';
-        
-        // Animación
-        const angle = Math.random() * Math.PI * 2;
-        const distance = Math.random() * 150 + 50;
-        const duration = Math.random() * 1 + 0.5;
-        
-        // Calcular la posición final
-        const endX = Math.cos(angle) * distance;
-        const endY = Math.sin(angle) * distance;
-        
-        // Configurar la animación
-        particle.animate(
-            [
-                { transform: 'translate(0, 0) scale(0.5)', opacity: 1 },
-                { transform: `translate(${endX}px, ${endY}px) scale(${Math.random() * 0.5 + 0.5})`, opacity: 0 }
-            ],
-            {
-                duration: duration * 1000,
-                easing: 'cubic-bezier(0,.9,.57,1)'
-            }
-        );
-        
-        explosionContainer.appendChild(particle);
-    }
-    
-    body.appendChild(explosionContainer);
-    
-    // Eliminar el contenedor después de la animación
-    setTimeout(() => {
-        explosionContainer.remove();
-    }, 2000);
-}
-
-// Modificar la función de inicialización para incluir la verificación del día de las flores amarillas
-window.addEventListener('DOMContentLoaded', () => {
-    loadPhotosData();
-    updateCounter();
-    setInterval(updateCounter, 1000);
-    
-    // Aplicar temas especiales si es necesario
-    if (isYellowFlowersDay()) {
-        applyYellowFlowersTheme();
-    } else if (isValentineDay()) {
-        applyValentineTheme();
-    }
-    
-    // Verificar fechas especiales a medianoche
-    function checkSpecialDaysAtMidnight() {
-        const now = new Date();
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        tomorrow.setHours(8, 37, 10, 0); // 10 segundos después de medianoche
-        
-        const timeUntilMidnight = tomorrow - now;
-        
-        setTimeout(() => {
-            // Comprobar ambos días especiales
-            if (isYellowFlowersDay()) {
-                applyYellowFlowersTheme();
-            } else if (isValentineDay()) {
-                applyValentineTheme();
-            } else {
-                // Remover ambos temas si no es ninguna fecha especial
-                body.classList.remove('yellow-flowers-theme');
-                body.classList.remove('valentine-theme');
+        // Crear una partícula adicional ocasionalmente con el movimiento del mouse
+        if (Math.random() > 0.98) { // Reducido para mejor rendimiento
+            const stardustContainer = document.querySelector('.stardust-container');
+            if (stardustContainer) {
+                const particle = document.createElement('div');
                 
-                // Restaurar el icono del corazón
-                heartBtn.innerHTML = '<i class="fas fa-heart"></i>';
-                heartBtn.classList.remove('pulse');
+                particle.style.position = 'absolute';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${e.clientX}px`;
+                particle.style.top = `${e.clientY}px`;
+                
+                const colorIndex = Math.floor(Math.random() * config.stardustOptions.colors.length);
+                particle.style.backgroundColor = config.stardustOptions.colors[colorIndex];
+                particle.style.boxShadow = `0 0 ${size + 5}px ${config.stardustOptions.colors[colorIndex]}`;
+                
+                particle.style.opacity = '0.8';
+                particle.style.transition = 'all 2s ease-out';
+                
+                stardustContainer.appendChild(particle);
+                
+                setTimeout(() => {
+                    const dirX = Math.random() * 100 - 50;
+                    const dirY = Math.random() * 100 - 50;
+                    particle.style.transform = `translate(${dirX}px, ${dirY}px)`;
+                    particle.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 2000);
             }
-            
-            // Configurar el próximo chequeo
-            checkSpecialDaysAtMidnight();
-        }, timeUntilMidnight);
-    }
-    
-    checkSpecialDaysAtMidnight();
+        }
+    });
 });
-
