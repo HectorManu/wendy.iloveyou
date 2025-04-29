@@ -604,8 +604,8 @@ const proposalManager = (function() {
             <div class="big-heart">
                 <i class="fas fa-heart"></i>
             </div>
-            <p>Gracias por hacer mi vida más feliz cada día.</p>
-            <p>Te quiero ❤️</p>
+            <p>Gracias por hacer mi vida más feliz cada día. jijiji</p>
+            <p>TE AMO ❤️</p>
             <p class="close-hint">Toca en cualquier lugar para continuar...</p>
         `;
         
