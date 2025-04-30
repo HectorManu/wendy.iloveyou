@@ -604,7 +604,7 @@ const proposalManager = (function() {
             <div class="big-heart">
                 <i class="fas fa-heart"></i>
             </div>
-            <p>Gracias por hacer mi vida más feliz cada día. jijiji</p>
+            <p>Checa Whats App, te tengo un stiker que te va a gustar. jijiji</p>
             <p>TE AMO ❤️</p>
             <p class="close-hint">Toca en cualquier lugar para continuar...</p>
         `;
