@@ -30,10 +30,18 @@ const body = document.body;
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 
-// Evento para el botón de corazón
+// Evento mejorado para el botón de corazón con GSAP
 heartBtn.addEventListener('click', () => {
     currentColorIndex = (currentColorIndex + 1) % heartColors.length;
-    heartBtn.style.color = heartColors[currentColorIndex];
+    const newColor = heartColors[currentColorIndex];
+    
+    // Usar animación GSAP si está disponible
+    if (window.GSAPAnimations) {
+        window.GSAPAnimations.animateHeartColorChange(heartBtn, newColor);
+    } else {
+        // Fallback para animación básica
+        heartBtn.style.color = newColor;
+    }
 });
 
 // Función para cargar JSON de fotos
@@ -117,12 +125,23 @@ function updateCounter() {
     }
 }
 
-// Función para manejar el carrusel
+// Función para manejar el carrusel con animación GSAP mejorada
 function moveCarousel(direction) {
     if (!photosData.length) return;
     
     currentSlide = (currentSlide + direction + photosData.length) % photosData.length;
-    carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Usar GSAP si está disponible para una animación más suave
+    if (window.gsap) {
+        gsap.to(carouselInner, {
+            duration: 0.6,
+            x: -currentSlide * 100 + '%',
+            ease: "power2.out"
+        });
+    } else {
+        // Fallback CSS
+        carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
 }
 
 // Event listeners para swipe en el carrusel
@@ -179,8 +198,7 @@ function createStardustAnimation() {
     }
 }
 
-
-/// Crear una partícula de stardust
+// Crear una partícula de stardust con animación GSAP mejorada
 function createStardustParticle(container) {
     // Decidir aleatoriamente si crear un corazón o una partícula circular
     const isHeart = Math.random() > 0.3; // 70% de probabilidad de ser corazón
@@ -211,7 +229,7 @@ function createStardustParticle(container) {
         particle.style.height = `${size}px`;
         
         // Configurar el color y el brillo
-        particle.style.backgroundColor = 'transparent'; // El fondo debe ser transparente
+        particle.style.backgroundColor = 'transparent';
         particle.innerHTML = `
             <svg viewBox="0 0 24 24" width="${size}px" height="${size}px">
                 <path fill="${color}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -235,16 +253,116 @@ function createStardustParticle(container) {
         particle.style.boxShadow = `0 0 ${glow}px ${glow/2}px ${color}`;
     }
     
-    // Animación de parpadeo
-    const duration = Math.random() * 5 + 3; // 3-8s
-    particle.style.animation = `twinkle ${duration}s infinite ease-in-out`;
-    particle.style.animationDelay = `${Math.random() * 5}s`;
+    // Animación mejorada con GSAP si está disponible
+    if (window.gsap) {
+        gsap.set(particle, { opacity: 0, scale: 0 });
+        
+        const tl = gsap.timeline({ repeat: -1 });
+        tl.to(particle, {
+            opacity: Math.random() * 0.8 + 0.2,
+            scale: Math.random() * 0.5 + 0.5,
+            duration: Math.random() * 2 + 1,
+            ease: "power2.out"
+        })
+        .to(particle, {
+            opacity: Math.random() * 0.3 + 0.1,
+            scale: Math.random() * 0.3 + 0.2,
+            duration: Math.random() * 2 + 1,
+            ease: "power2.inOut"
+        });
+        
+        // Movimiento flotante
+        gsap.to(particle, {
+            x: `+=${Math.random() * 100 - 50}`,
+            y: `+=${Math.random() * 100 - 50}`,
+            duration: Math.random() * 20 + 10,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+    } else {
+        // Fallback CSS
+        const duration = Math.random() * 5 + 3; // 3-8s
+        particle.style.animation = `twinkle ${duration}s infinite ease-in-out`;
+        particle.style.animationDelay = `${Math.random() * 5}s`;
+    }
     
     // Añadir al contenedor
     container.appendChild(particle);
 }
 
-// Inicialización
+// Función mejorada para crear confeti con GSAP
+function createEnhancedConfetti() {
+    // Usar la función GSAP si está disponible
+    if (window.GSAPAnimations && window.GSAPAnimations.createGSAPConfetti) {
+        window.GSAPAnimations.createGSAPConfetti();
+        return;
+    }
+    
+    // Fallback al confeti original
+    createOriginalConfetti();
+}
+
+// Función de confeti original como fallback
+function createOriginalConfetti() {
+    const colors = ['#ff6b95', '#7e57c2', '#00bcd4', '#ff4081', '#9575cd'];
+    
+    for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            const size = Math.random() * 12 + 8;
+            confetti.style.width = `${size}px`;
+            confetti.style.height = `${size}px`;
+            
+            const posX = Math.random() * window.innerWidth;
+            confetti.style.left = `${posX}px`;
+            confetti.style.top = '-10px';
+            
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.backgroundColor = color;
+            confetti.style.boxShadow = `0 0 ${size/2}px ${color}`;
+            
+            confetti.style.borderRadius = '50%';
+            confetti.style.position = 'fixed';
+            confetti.style.pointerEvents = 'none';
+            confetti.style.zIndex = '1000';
+            
+            document.body.appendChild(confetti);
+            
+            const duration = Math.random() * 3 + 2;
+            const rotation = Math.random() * 360;
+            
+            if (window.gsap) {
+                gsap.to(confetti, {
+                    y: window.innerHeight + 100,
+                    rotation: rotation + 720,
+                    duration: duration,
+                    ease: "power2.in",
+                    onComplete: () => confetti.remove()
+                });
+            } else {
+                // Fallback CSS
+                confetti.animate(
+                    [
+                        { transform: `translateY(0) rotate(${rotation}deg)`, opacity: 1 },
+                        { transform: `translateY(${window.innerHeight + 100}px) rotate(${rotation + 720}deg)`, opacity: 0.3 }
+                    ],
+                    {
+                        duration: duration * 1000,
+                        easing: 'linear',
+                        fill: 'forwards'
+                    }
+                );
+                
+                setTimeout(() => confetti.remove(), duration * 1000);
+            }
+        }, Math.random() * 1000);
+    }
+}
+
+// Inicialización mejorada
 window.addEventListener('DOMContentLoaded', () => {
     loadPhotosData();
     updateCounter();
@@ -263,7 +381,7 @@ window.addEventListener('DOMContentLoaded', () => {
         window.specialEvents.initializeSpecialEvents();
     }
     
-    // Añadir interacción para el movimiento de partículas con el mouse (reducido para mejorar rendimiento)
+    // Añadir interacción mejorada para el movimiento de partículas con el mouse
     document.addEventListener('mousemove', (e) => {
         if (!config.stardustOptions.enabled) return;
         
@@ -285,25 +403,49 @@ window.addEventListener('DOMContentLoaded', () => {
                 particle.style.top = `${e.clientY}px`;
                 
                 const colorIndex = Math.floor(Math.random() * config.stardustOptions.colors.length);
-                particle.style.backgroundColor = config.stardustOptions.colors[colorIndex];
-                particle.style.boxShadow = `0 0 ${size + 5}px ${config.stardustOptions.colors[colorIndex]}`;
-                
-                particle.style.opacity = '0.8';
-                particle.style.transition = 'all 2s ease-out';
+                const color = config.stardustOptions.colors[colorIndex];
+                particle.style.backgroundColor = color;
+                particle.style.boxShadow = `0 0 ${size + 5}px ${color}`;
                 
                 stardustContainer.appendChild(particle);
                 
-                setTimeout(() => {
-                    const dirX = Math.random() * 100 - 50;
-                    const dirY = Math.random() * 100 - 50;
-                    particle.style.transform = `translate(${dirX}px, ${dirY}px)`;
-                    particle.style.opacity = '0';
-                }, 10);
-                
-                setTimeout(() => {
-                    particle.remove();
-                }, 2000);
+                if (window.gsap) {
+                    gsap.set(particle, { scale: 0, opacity: 0.8 });
+                    
+                    const tl = gsap.timeline({
+                        onComplete: () => particle.remove()
+                    });
+                    
+                    tl.to(particle, {
+                        scale: 1,
+                        duration: 0.2,
+                        ease: "back.out(1.7)"
+                    })
+                    .to(particle, {
+                        x: (Math.random() - 0.5) * 100,
+                        y: (Math.random() - 0.5) * 100,
+                        scale: 0,
+                        opacity: 0,
+                        duration: 2,
+                        ease: "power2.out"
+                    });
+                } else {
+                    // Fallback CSS
+                    particle.style.opacity = '0.8';
+                    particle.style.transition = 'all 2s ease-out';
+                    
+                    setTimeout(() => {
+                        const dirX = Math.random() * 100 - 50;
+                        const dirY = Math.random() * 100 - 50;
+                        particle.style.transform = `translate(${dirX}px, ${dirY}px)`;
+                        particle.style.opacity = '0';
+                    }, 10);
+                    
+                    setTimeout(() => particle.remove(), 2000);
+                }
             }
         }
     });
+    
+    console.log('✨ Script principal cargado con mejoras GSAP!');
 });

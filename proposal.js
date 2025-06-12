@@ -1,6 +1,7 @@
 /*
  * proposal.js - Funcionalidad para la propuesta "¿Quieres ser mi novia?"
  * Versión reutilizable que permite múltiples celebraciones
+ * Mejorado con animaciones GSAP
  */
 
 // Módulo para la propuesta
@@ -29,6 +30,8 @@ const proposalManager = (function() {
         
         // Configurar la propuesta
         setupProposal();
+        
+        console.log('💖 Proposal Manager initialized with GSAP enhancements!');
     }
     
     // Configurar la propuesta con la fecha actual
@@ -44,14 +47,30 @@ const proposalManager = (function() {
             proposalTitle.innerHTML = `¿Quieres ser mi novia hoy, ${formattedDate}?`;
         }
         
-        // Mostrar la propuesta
-        proposalContainer.style.display = 'block';
+        // Mostrar la propuesta con animación GSAP si está disponible
+        if (window.gsap) {
+            gsap.set(proposalContainer, { display: 'block', opacity: 0 });
+            gsap.to(proposalContainer, {
+                opacity: 1,
+                duration: 0.5,
+                ease: "power2.out"
+            });
+        } else {
+            proposalContainer.style.display = 'block';
+        }
         
         // IMPORTANTE: Desactivar el efecto hover del recuadro de la propuesta
         proposalCard.classList.add('no-hover');
         
         // Configurar los botones
         setupProposalButtons();
+        
+        // Animar la propuesta si GSAP está disponible
+        if (window.GSAPAnimations && window.GSAPAnimations.animateProposal) {
+            setTimeout(() => {
+                window.GSAPAnimations.animateProposal();
+            }, 500);
+        }
     }
     
     // Configurar los botones de la propuesta
@@ -75,68 +94,130 @@ const proposalManager = (function() {
             // Marcar celebración como activa
             celebrationActive = true;
             
-            // Mostrar mensaje feliz
-            proposalMessage.innerHTML = "¡Me haces la persona más feliz del mundo! ❤️";
-            proposalMessage.style.fontSize = "1.3rem";
-            proposalMessage.style.fontWeight = "bold";
+            // Mostrar mensaje feliz con animación
+            showMessage("¡Me haces la persona más feliz del mundo! ❤️", 'success');
             
-            // Cambiar estilos
-            yesBtn.style.transform = "scale(1.2)";
-            noBtn.style.opacity = "0.5";
+            // Animar botón SÍ con GSAP si está disponible
+            if (window.gsap) {
+                gsap.to(yesBtn, {
+                    scale: 1.3,
+                    duration: 0.3,
+                    ease: "back.out(1.7)",
+                    yoyo: true,
+                    repeat: 1
+                });
+                
+                gsap.to(noBtn, {
+                    opacity: 0.5,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            } else {
+                // Fallback CSS
+                yesBtn.style.transform = "scale(1.2)";
+                noBtn.style.opacity = "0.5";
+            }
             
             // Deshabilitar temporalmente los botones
             yesBtn.disabled = true;
             noBtn.disabled = true;
             
-            // Crear efecto de confeti
-            createConfetti();
+            // Crear efecto de confeti mejorado
+            createEnhancedConfetti();
             
             // Crear pantalla de celebración después de un breve retraso
             setTimeout(function() {
                 createYesScreen(function() {
                     // Este callback se ejecuta cuando se cierra la pantalla de celebración
-                    
-                    // Restaurar el estado inicial
-                    yesBtn.style.transform = "";
-                    noBtn.style.opacity = "1";
-                    
-                    // Habilitar los botones nuevamente
-                    yesBtn.disabled = false;
-                    noBtn.disabled = false;
-                    
-                    // Resetear el mensaje
-                    proposalMessage.innerHTML = "";
-                    
-                    // Marcar celebración como inactiva
-                    celebrationActive = false;
+                    resetProposalState();
                 });
             }, 1500);
         });
         
-        // Inicializar el botón NO
-        noBtn.style.position = "relative";
-        noBtn.style.transition = "transform 0.3s ease";
+        // Inicializar el botón NO con GSAP si está disponible
+        if (window.gsap) {
+            gsap.set(noBtn, { 
+                position: "relative",
+                x: 0,
+                y: 0
+            });
+        } else {
+            noBtn.style.position = "relative";
+            noBtn.style.transition = "transform 0.3s ease";
+        }
         
         // Evento para el botón "NO" - mouseenter
         noBtn.addEventListener('mouseenter', function(e) {
             if (celebrationActive) return; // No mover durante celebración
             
-            moveNoButton(this);
+            moveNoButtonGSAP(this);
             noButtonClicks++;
-            proposalMessage.innerHTML = getNoButtonMessage(noButtonClicks % 5);
+            showMessage(getNoButtonMessage(noButtonClicks % 5), 'playful');
         });
         
         // Evento para el botón "NO" - click
         noBtn.addEventListener('click', function(e) {
             if (celebrationActive) return; // No mover durante celebración
             
-            moveNoButton(this);
+            moveNoButtonGSAP(this);
             noButtonClicks++;
-            proposalMessage.innerHTML = getNoButtonMessage(noButtonClicks % 5);
+            showMessage(getNoButtonMessage(noButtonClicks % 5), 'playful');
         });
         
         // Inicialmente, mueve el botón NO para que esté en una posición aleatoria
-        setTimeout(() => moveNoButton(noBtn), 500);
+        setTimeout(() => moveNoButtonGSAP(noBtn), 500);
+    }
+    
+    // Función para mostrar mensajes con animación
+    function showMessage(text, type = 'normal') {
+        proposalMessage.innerHTML = text;
+        
+        if (window.gsap) {
+            gsap.fromTo(proposalMessage, 
+                { 
+                    opacity: 0, 
+                    y: 20,
+                    scale: 0.9
+                },
+                { 
+                    opacity: 1, 
+                    y: 0,
+                    scale: 1,
+                    duration: 0.5,
+                    ease: "back.out(1.7)"
+                }
+            );
+            
+            // Efecto especial para mensajes de éxito
+            if (type === 'success') {
+                gsap.to(proposalMessage, {
+                    fontSize: "1.3rem",
+                    fontWeight: "bold",
+                    color: "#ff6b95",
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            } else if (type === 'playful') {
+                // Efecto de rebote para mensajes juguetones
+                gsap.fromTo(proposalMessage,
+                    { scale: 0.8 },
+                    { 
+                        scale: 1.1,
+                        duration: 0.2,
+                        ease: "back.out(1.7)",
+                        yoyo: true,
+                        repeat: 1
+                    }
+                );
+            }
+        } else {
+            // Fallback CSS
+            proposalMessage.style.opacity = '1';
+            if (type === 'success') {
+                proposalMessage.style.fontSize = "1.3rem";
+                proposalMessage.style.fontWeight = "bold";
+            }
+        }
     }
     
     // Función para obtener un mensaje según el número de clics en NO
@@ -152,435 +233,223 @@ const proposalManager = (function() {
         return messages[index];
     }
     
-    // Función simplificada para mover el botón "NO"
-    function moveNoButton(button) {
+    // Función mejorada para mover el botón "NO" con GSAP
+    function moveNoButtonGSAP(button) {
         // Calculamos 4 posiciones posibles (arriba, abajo, izquierda, derecha)
         const positions = [
-            { transform: "translate(100px, -50px)" },  // Derecha arriba
-            { transform: "translate(-100px, -50px)" }, // Izquierda arriba
-            { transform: "translate(100px, 50px)" },   // Derecha abajo
-            { transform: "translate(-100px, 50px)" }   // Izquierda abajo
+            { x: 100, y: -50 },  // Derecha arriba
+            { x: -100, y: -50 }, // Izquierda arriba
+            { x: 100, y: 50 },   // Derecha abajo
+            { x: -100, y: 50 }   // Izquierda abajo
         ];
         
-        // Seleccionamos una posición aleatoria diferente a la actual
-        let newPos;
-        do {
-            newPos = Math.floor(Math.random() * positions.length);
-        } while (button.style.transform === positions[newPos].transform);
+        // Seleccionamos una posición aleatoria
+        const newPos = positions[Math.floor(Math.random() * positions.length)];
         
-        // Aplicamos la nueva posición
-        button.style.transform = positions[newPos].transform;
+        if (window.gsap) {
+            // Animación con GSAP más suave y divertida
+            gsap.to(button, {
+                x: newPos.x,
+                y: newPos.y,
+                duration: 0.4,
+                ease: "back.out(1.7)",
+                onStart: () => {
+                    // Efecto de "escape" del botón
+                    gsap.to(button, {
+                        scale: 0.9,
+                        duration: 0.1,
+                        yoyo: true,
+                        repeat: 1,
+                        ease: "power2.inOut"
+                    });
+                }
+            });
+            
+            // Efecto de partículas cuando el botón se mueve
+            createButtonEscapeParticles(button);
+        } else {
+            // Fallback CSS
+            button.style.transform = `translate(${newPos.x}px, ${newPos.y}px)`;
+        }
     }
     
-    // Función para crear confeti con letras "W & H" responsivas
-    function createConfetti() {
-        // Eliminar confeti existente si hay
-        const existingConfetti = document.querySelector('.confetti-container');
-        if (existingConfetti) {
-            existingConfetti.remove();
-        }
+    // Crear partículas cuando el botón NO "escapa"
+    function createButtonEscapeParticles(button) {
+        if (!window.gsap) return;
         
-        // Crear contenedor de confeti
-        const confettiContainer = document.createElement('div');
-        confettiContainer.className = 'confetti-container';
-        document.body.appendChild(confettiContainer);
+        const rect = button.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
         
-        // Colores del confeti
-        const colors = ['#ff6b95', '#7e57c2', '#00bcd4', '#ffd700', '#ff4081', '#9575cd'];
-        
-        // Primera explosión de confeti normal
-        createRegularConfetti(40);
-        
-        // Secuencia de letras
-        // Primero vamos a mostrar "W", luego "&", y finalmente "H"
-        
-        // Mostrar la "W" después de 1 segundo
-        setTimeout(() => {
-            // Limpiar cualquier letra anterior
-            const existingLetters = confettiContainer.querySelectorAll('.letter-container');
-            existingLetters.forEach(letter => letter.remove());
-            
-            // Crear la W
-            createLetterW();
-        }, 1000);
-        
-        // Mostrar el "&" después de la "W"
-        setTimeout(() => {
-            // Limpiar cualquier letra anterior
-            const existingLetters = confettiContainer.querySelectorAll('.letter-container');
-            existingLetters.forEach(letter => letter.remove());
-            
-            // Crear el &
-            createAmpersand();
-        }, 3000);
-        
-        // Mostrar la "H" después del "&"
-        setTimeout(() => {
-            // Limpiar cualquier letra anterior
-            const existingLetters = confettiContainer.querySelectorAll('.letter-container');
-            existingLetters.forEach(letter => letter.remove());
-            
-            // Crear la H
-            createLetterH();
-        }, 5000);
-        
-        // Explosión final de confeti
-        setTimeout(() => {
-            createRegularConfetti(80);
-        }, 6500);
-        
-        // Función para crear confeti normal (corazones y formas)
-        function createRegularConfetti(count) {
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    // Decidir si crear un corazón o una forma simple
-                    const isHeart = Math.random() > 0.4; // 60% de probabilidad de ser corazón
-                    
-                    if (isHeart) {
-                        // Crear un corazón SVG
-                        const heart = document.createElement('div');
-                        heart.className = 'confetti-heart';
-                        
-                        // Tamaño aleatorio
-                        const size = Math.random() * 20 + 10;
-                        
-                        // Color aleatorio
-                        const color = colors[Math.floor(Math.random() * colors.length)];
-                        
-                        // Crear SVG
-                        heart.innerHTML = `
-                            <svg viewBox="0 0 24 24" width="${size}" height="${size}">
-                                <path fill="${color}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
-                        `;
-                        
-                        // Posición inicial aleatoria
-                        const posX = Math.random() * window.innerWidth;
-                        heart.style.left = `${posX}px`;
-                        heart.style.top = '-20px';
-                        
-                        // Brillo
-                        heart.style.filter = `drop-shadow(0 0 8px ${color})`;
-                        
-                        // Velocidad y rotación aleatoria
-                        const duration = Math.random() * 4 + 3;
-                        const rotation = Math.random() * 360;
-                        
-                        // Animación personalizada
-                        heart.animate(
-                            [
-                                { transform: `translateY(0) rotate(${rotation}deg) scale(1)`, opacity: 1 },
-                                { transform: `translateY(${window.innerHeight + 100}px) rotate(${rotation + 720}deg) scale(0.5)`, opacity: 0.3 }
-                            ],
-                            {
-                                duration: duration * 1000,
-                                easing: 'cubic-bezier(0.215, 0.610, 0.355, 1.000)',
-                                fill: 'forwards'
-                            }
-                        );
-                        
-                        // Añadir al contenedor
-                        confettiContainer.appendChild(heart);
-                        
-                        // Eliminar después de la animación
-                        setTimeout(() => {
-                            heart.remove();
-                        }, duration * 1000);
-                        
-                    } else {
-                        // Crear una forma simple (círculo, cuadrado, etc.)
-                        const confetti = document.createElement('div');
-                        confetti.className = 'confetti';
-                        
-                        // Tamaño aleatorio
-                        const size = Math.random() * 12 + 8;
-                        confetti.style.width = `${size}px`;
-                        confetti.style.height = `${size}px`;
-                        
-                        // Posición inicial aleatoria
-                        const posX = Math.random() * window.innerWidth;
-                        confetti.style.left = `${posX}px`;
-                        confetti.style.top = '-10px';
-                        
-                        // Color aleatorio
-                        const color = colors[Math.floor(Math.random() * colors.length)];
-                        confetti.style.backgroundColor = color;
-                        confetti.style.boxShadow = `0 0 ${size/2}px ${color}`;
-                        
-                        // Forma aleatoria
-                        const shapes = ['circle', 'square', 'triangle'];
-                        const shape = shapes[Math.floor(Math.random() * shapes.length)];
-                        
-                        if (shape === 'circle') {
-                            confetti.style.borderRadius = '50%';
-                        } else if (shape === 'triangle') {
-                            confetti.style.width = '0';
-                            confetti.style.height = '0';
-                            confetti.style.backgroundColor = 'transparent';
-                            confetti.style.borderLeft = `${size/2}px solid transparent`;
-                            confetti.style.borderRight = `${size/2}px solid transparent`;
-                            confetti.style.borderBottom = `${size}px solid ${color}`;
-                            confetti.style.boxShadow = `0 0 ${size/2}px ${color}`;
-                        }
-                        
-                        // Velocidad y rotación aleatoria
-                        const duration = Math.random() * 3 + 2;
-                        const rotation = Math.random() * 360;
-                        
-                        // Animación personalizada
-                        confetti.animate(
-                            [
-                                { transform: `translateY(0) rotate(${rotation}deg)`, opacity: 1 },
-                                { transform: `translateY(${window.innerHeight + 100}px) rotate(${rotation + 720}deg)`, opacity: 0.3 }
-                            ],
-                            {
-                                duration: duration * 1000,
-                                easing: 'linear',
-                                fill: 'forwards'
-                            }
-                        );
-                        
-                        // Añadir al contenedor
-                        confettiContainer.appendChild(confetti);
-                        
-                        // Eliminar después de la animación
-                        setTimeout(() => {
-                            confetti.remove();
-                        }, duration * 1000);
-                    }
-                }, Math.random() * 1000); // Dispersar la creación en 1 segundo
-            }
-        }
-        
-        // Función para crear la letra "W" responsiva
-        function createLetterW() {
-            // Crear contenedor para la letra
-            const letterContainer = document.createElement('div');
-            letterContainer.className = 'letter-container letter-w';
-            
-            // Posicionar en el centro de la pantalla
-            letterContainer.style.position = 'absolute';
-            letterContainer.style.left = '50%';
-            letterContainer.style.top = '50%';
-            letterContainer.style.transform = 'translate(-50%, -50%)';
-            letterContainer.style.width = isSmallScreen() ? '60vw' : '300px';
-            letterContainer.style.height = isSmallScreen() ? '60vw' : '300px';
-            
-            // Añadir al contenedor principal
-            confettiContainer.appendChild(letterContainer);
-            
-            // Tamaño de partícula basado en el tamaño de pantalla
-            const particleSize = isSmallScreen() ? 6 : 10;
-            
-            // Color para la W
-            const wColor = '#ff6b95';
-            
-            // Crear partículas para formar la W
-            const wPositions = [
-                // Primera línea diagonal descendente
-                {x: '10%', y: '20%'}, {x: '15%', y: '30%'}, {x: '20%', y: '40%'}, {x: '25%', y: '50%'}, {x: '30%', y: '60%'}, {x: '35%', y: '70%'}, {x: '40%', y: '80%'},
-                // Segunda línea diagonal ascendente
-                {x: '45%', y: '70%'}, {x: '50%', y: '60%'}, {x: '55%', y: '50%'}, {x: '60%', y: '40%'},
-                // Tercera línea diagonal descendente
-                {x: '65%', y: '50%'}, {x: '70%', y: '60%'}, {x: '75%', y: '70%'}, {x: '80%', y: '80%'},
-                // Cuarta línea diagonal ascendente
-                {x: '85%', y: '70%'}, {x: '90%', y: '60%'}, {x: '95%', y: '50%'}, {x: '100%', y: '40%'}
-            ];
-            
-            // Crear partículas con un retraso para efecto de "escritura"
-            wPositions.forEach((pos, index) => {
-                setTimeout(() => {
-                    const particle = createParticle(pos.x, pos.y, particleSize, wColor);
-                    letterContainer.appendChild(particle);
-                }, index * 50); // Retraso incremental para cada partícula
-            });
-            
-            // Animar la entrada y salida de la letra completa
-            letterContainer.animate(
-                [
-                    { opacity: 0, transform: 'translate(-50%, -50%) scale(0.8)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1.1)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }
-                ],
-                {
-                    duration: 800,
-                    easing: 'ease-out',
-                    fill: 'forwards'
-                }
-            );
-        }
-        
-        // Función para crear el símbolo "&" responsivo
-        function createAmpersand() {
-            // Crear contenedor para el símbolo
-            const letterContainer = document.createElement('div');
-            letterContainer.className = 'letter-container letter-ampersand';
-            
-            // Posicionar en el centro de la pantalla
-            letterContainer.style.position = 'absolute';
-            letterContainer.style.left = '50%';
-            letterContainer.style.top = '50%';
-            letterContainer.style.transform = 'translate(-50%, -50%)';
-            letterContainer.style.width = isSmallScreen() ? '60vw' : '300px';
-            letterContainer.style.height = isSmallScreen() ? '60vw' : '300px';
-            
-            // Añadir al contenedor principal
-            confettiContainer.appendChild(letterContainer);
-            
-            // Tamaño de partícula basado en el tamaño de pantalla
-            const particleSize = isSmallScreen() ? 6 : 10;
-            
-            // Color para el &
-            const ampColor = '#7e57c2';
-            
-            // Crear partículas para formar el &
-            const ampPositions = [
-                // Círculo superior
-                {x: '40%', y: '20%'}, {x: '30%', y: '25%'}, {x: '30%', y: '35%'}, {x: '40%', y: '40%'}, {x: '50%', y: '35%'}, {x: '50%', y: '25%'},
-                // Línea diagonal
-                {x: '45%', y: '45%'}, {x: '50%', y: '50%'}, {x: '55%', y: '55%'}, {x: '60%', y: '60%'}, {x: '65%', y: '65%'}, {x: '70%', y: '70%'},
-                // Bucle inferior
-                {x: '60%', y: '75%'}, {x: '50%', y: '80%'}, {x: '40%', y: '75%'}, {x: '35%', y: '70%'}, {x: '40%', y: '65%'}, {x: '50%', y: '60%'}, {x: '60%', y: '65%'}
-            ];
-            
-            // Crear partículas con un retraso para efecto de "escritura"
-            ampPositions.forEach((pos, index) => {
-                setTimeout(() => {
-                    const particle = createParticle(pos.x, pos.y, particleSize, ampColor);
-                    letterContainer.appendChild(particle);
-                }, index * 50); // Retraso incremental para cada partícula
-            });
-            
-            // Animar la entrada y salida de la letra completa
-            letterContainer.animate(
-                [
-                    { opacity: 0, transform: 'translate(-50%, -50%) scale(0.8)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1.1)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }
-                ],
-                {
-                    duration: 800,
-                    easing: 'ease-out',
-                    fill: 'forwards'
-                }
-            );
-        }
-        
-        // Función para crear la letra "H" responsiva
-        function createLetterH() {
-            // Crear contenedor para la letra
-            const letterContainer = document.createElement('div');
-            letterContainer.className = 'letter-container letter-h';
-            
-            // Posicionar en el centro de la pantalla
-            letterContainer.style.position = 'absolute';
-            letterContainer.style.left = '50%';
-            letterContainer.style.top = '50%';
-            letterContainer.style.transform = 'translate(-50%, -50%)';
-            letterContainer.style.width = isSmallScreen() ? '60vw' : '300px';
-            letterContainer.style.height = isSmallScreen() ? '60vw' : '300px';
-            
-            // Añadir al contenedor principal
-            confettiContainer.appendChild(letterContainer);
-            
-            // Tamaño de partícula basado en el tamaño de pantalla
-            const particleSize = isSmallScreen() ? 6 : 10;
-            
-            // Color para la H
-            const hColor = '#00bcd4';
-            
-            // Crear partículas para formar la H
-            const hPositions = [
-                // Línea vertical izquierda
-                {x: '20%', y: '20%'}, {x: '20%', y: '30%'}, {x: '20%', y: '40%'}, {x: '20%', y: '50%'}, {x: '20%', y: '60%'}, {x: '20%', y: '70%'}, {x: '20%', y: '80%'},
-                // Línea horizontal
-                {x: '30%', y: '50%'}, {x: '40%', y: '50%'}, {x: '50%', y: '50%'}, {x: '60%', y: '50%'}, {x: '70%', y: '50%'},
-                // Línea vertical derecha
-                {x: '80%', y: '20%'}, {x: '80%', y: '30%'}, {x: '80%', y: '40%'}, {x: '80%', y: '50%'}, {x: '80%', y: '60%'}, {x: '80%', y: '70%'}, {x: '80%', y: '80%'}
-            ];
-            
-            // Crear partículas con un retraso para efecto de "escritura"
-            hPositions.forEach((pos, index) => {
-                setTimeout(() => {
-                    const particle = createParticle(pos.x, pos.y, particleSize, hColor);
-                    letterContainer.appendChild(particle);
-                }, index * 50); // Retraso incremental para cada partícula
-            });
-            
-            // Animar la entrada y salida de la letra completa
-            letterContainer.animate(
-                [
-                    { opacity: 0, transform: 'translate(-50%, -50%) scale(0.8)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1.1)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }
-                ],
-                {
-                    duration: 800,
-                    easing: 'ease-out',
-                    fill: 'forwards'
-                }
-            );
-        }
-        
-        // Función para crear una partícula
-        function createParticle(x, y, size, color) {
+        for (let i = 0; i < 5; i++) {
             const particle = document.createElement('div');
-            particle.className = 'letter-particle';
+            particle.innerHTML = '💨';
+            particle.style.position = 'fixed';
+            particle.style.fontSize = '16px';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '1000';
             
-            // Configurar estilos
-            particle.style.position = 'absolute';
-            particle.style.left = x;
-            particle.style.top = y;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.backgroundColor = color;
-            particle.style.borderRadius = '50%';
-            particle.style.boxShadow = `0 0 ${size}px ${color}`;
-            particle.style.transform = 'translate(-50%, -50%)';
-            particle.style.opacity = '0';
+            gsap.set(particle, {
+                x: centerX,
+                y: centerY,
+                opacity: 0.8
+            });
             
-            // Animar la aparición
-            particle.animate(
-                [
-                    { opacity: 0, transform: 'translate(-50%, -50%) scale(0.5)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1.5)' },
-                    { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }
-                ],
-                {
-                    duration: 300,
-                    easing: 'ease-out',
-                    fill: 'forwards'
-                }
-            );
+            document.body.appendChild(particle);
             
-            // Añadir animación de pulso
-            particle.style.animation = 'pulse-letter 1.5s infinite ease-in-out';
+            const angle = (360 / 5) * i;
+            const distance = 30;
+            const endX = centerX + Math.cos(angle * Math.PI / 180) * distance;
+            const endY = centerY + Math.sin(angle * Math.PI / 180) * distance;
             
-            return particle;
+            gsap.to(particle, {
+                x: endX,
+                y: endY,
+                opacity: 0,
+                scale: 0.5,
+                duration: 0.8,
+                ease: "power2.out",
+                onComplete: () => particle.remove()
+            });
         }
-        
-        // Función auxiliar para detectar pantallas pequeñas
-        function isSmallScreen() {
-            return window.innerWidth < 768;
-        }
-        
-        // Eliminar el contenedor después de un tiempo
-        setTimeout(() => {
-            // Función de eliminación suave
-            const fadeOut = () => {
-                confettiContainer.style.transition = 'opacity 1s ease';
-                confettiContainer.style.opacity = '0';
-                setTimeout(() => {
-                    confettiContainer.remove();
-                }, 1000);
-            };
-            
-            // Eliminar después de 10 segundos
-            setTimeout(fadeOut, 10000);
-        }, 1000);
     }
     
-    // Crear pantalla de celebración
+    // Función para crear confeti mejorado
+    function createEnhancedConfetti() {
+        // Usar la función GSAP si está disponible
+        if (window.GSAPAnimations && window.GSAPAnimations.createGSAPConfetti) {
+            window.GSAPAnimations.createGSAPConfetti();
+        } else if (window.createEnhancedConfetti) {
+            window.createEnhancedConfetti();
+        } else {
+            // Fallback básico
+            createBasicConfetti();
+        }
+    }
+    
+    // Confeti básico como último recurso
+    function createBasicConfetti() {
+        const colors = ['#ff6b95', '#7e57c2', '#00bcd4', '#ff4081', '#9575cd'];
+        
+        for (let i = 0; i < 40; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = '50%';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.zIndex = '1000';
+                
+                document.body.appendChild(confetti);
+                
+                if (window.gsap) {
+                    gsap.to(confetti, {
+                        y: window.innerHeight + 20,
+                        rotation: Math.random() * 720,
+                        duration: Math.random() * 3 + 2,
+                        ease: "power2.in",
+                        onComplete: () => confetti.remove()
+                    });
+                } else {
+                    setTimeout(() => confetti.remove(), 3000);
+                }
+            }, Math.random() * 1000);
+        }
+    }
+    
+    // Función para crear letras animadas (W & H)
+    function createAnimatedLetters() {
+        // Esta función mantiene la funcionalidad original pero con mejoras GSAP
+        if (!window.gsap) {
+            // Usar la implementación original si GSAP no está disponible
+            createConfetti();
+            return;
+        }
+        
+        // Crear contenedor de letras
+        const lettersContainer = document.createElement('div');
+        lettersContainer.className = 'letters-container';
+        lettersContainer.style.position = 'fixed';
+        lettersContainer.style.top = '0';
+        lettersContainer.style.left = '0';
+        lettersContainer.style.width = '100%';
+        lettersContainer.style.height = '100%';
+        lettersContainer.style.pointerEvents = 'none';
+        lettersContainer.style.zIndex = '999';
+        
+        document.body.appendChild(lettersContainer);
+        
+        // Secuencia de letras W, &, H
+        const letters = ['W', '&', 'H'];
+        const colors = ['#ff6b95', '#7e57c2', '#00bcd4'];
+        
+        letters.forEach((letter, index) => {
+            setTimeout(() => {
+                createAnimatedLetter(lettersContainer, letter, colors[index]);
+            }, index * 2000);
+        });
+        
+        // Eliminar contenedor después de la secuencia
+        setTimeout(() => {
+            gsap.to(lettersContainer, {
+                opacity: 0,
+                duration: 1,
+                onComplete: () => lettersContainer.remove()
+            });
+        }, 8000);
+    }
+    
+    // Crear una letra animada
+    function createAnimatedLetter(container, letter, color) {
+        const letterElement = document.createElement('div');
+        letterElement.style.position = 'absolute';
+        letterElement.style.left = '50%';
+        letterElement.style.top = '50%';
+        letterElement.style.transform = 'translate(-50%, -50%)';
+        letterElement.style.fontSize = window.innerWidth < 768 ? '8rem' : '12rem';
+        letterElement.style.fontWeight = 'bold';
+        letterElement.style.color = color;
+        letterElement.style.textShadow = `0 0 30px ${color}`;
+        letterElement.textContent = letter;
+        
+        container.appendChild(letterElement);
+        
+        // Animación de entrada
+        const tl = gsap.timeline();
+        tl.fromTo(letterElement,
+            { 
+                scale: 0,
+                rotation: -180,
+                opacity: 0
+            },
+            {
+                scale: 1.2,
+                rotation: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: "back.out(1.7)"
+            }
+        )
+        .to(letterElement, {
+            scale: 1,
+            duration: 0.3,
+            ease: "power2.out"
+        })
+        .to(letterElement, {
+            scale: 0,
+            rotation: 180,
+            opacity: 0,
+            duration: 0.8,
+            ease: "back.in(1.7)",
+            delay: 1
+        });
+    }
+    
+    // Crear pantalla de celebración mejorada
     function createYesScreen(onCloseCallback) {
         // Verificar si ya existe
         let yesScreen = document.querySelector('.yes-screen');
@@ -604,7 +473,7 @@ const proposalManager = (function() {
             <div class="big-heart">
                 <i class="fas fa-heart"></i>
             </div>
-            <p>Checa Whats App, te tengo un stiker que te va a gustar. jijiji</p>
+            <p>Checa WhatsApp, te tengo un sticker que te va a gustar. jijiji</p>
             <p>TE AMO ❤️</p>
             <p class="close-hint">Toca en cualquier lugar para continuar...</p>
         `;
@@ -612,27 +481,155 @@ const proposalManager = (function() {
         // Añadir al cuerpo
         document.body.appendChild(yesScreen);
         
-        // Mostrar con animación
-        setTimeout(function() {
-            yesScreen.classList.add('show');
-        }, 100);
+        // Animación de entrada con GSAP
+        if (window.gsap) {
+            gsap.fromTo(yesScreen,
+                { 
+                    opacity: 0,
+                    scale: 0.8
+                },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 0.8,
+                    ease: "back.out(1.7)"
+                }
+            );
+            
+            // Animar elementos internos
+            gsap.from(yesScreen.children, {
+                y: 50,
+                opacity: 0,
+                duration: 0.6,
+                stagger: 0.2,
+                ease: "power2.out",
+                delay: 0.3
+            });
+            
+            // Animación especial para el corazón
+            const heart = yesScreen.querySelector('.big-heart i');
+            if (heart) {
+                gsap.to(heart, {
+                    scale: 1.2,
+                    duration: 1.5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            }
+            
+            // Crear partículas de celebración continua
+            createCelebrationParticles(yesScreen);
+        } else {
+            // Fallback CSS
+            setTimeout(function() {
+                yesScreen.classList.add('show');
+            }, 100);
+        }
         
         // Evento para cerrar al hacer clic
         yesScreen.addEventListener('click', function() {
-            yesScreen.style.opacity = '0';
-            setTimeout(function() {
-                yesScreen.remove();
-                // Ejecutar callback después de cerrar
-                if (typeof onCloseCallback === 'function') {
-                    onCloseCallback();
-                }
-            }, 500);
+            if (window.gsap) {
+                gsap.to(yesScreen, {
+                    opacity: 0,
+                    scale: 0.8,
+                    duration: 0.5,
+                    ease: "back.in(1.7)",
+                    onComplete: () => {
+                        yesScreen.remove();
+                        if (typeof onCloseCallback === 'function') {
+                            onCloseCallback();
+                        }
+                    }
+                });
+            } else {
+                // Fallback CSS
+                yesScreen.style.opacity = '0';
+                setTimeout(function() {
+                    yesScreen.remove();
+                    if (typeof onCloseCallback === 'function') {
+                        onCloseCallback();
+                    }
+                }, 500);
+            }
         });
+    }
+    
+    // Crear partículas de celebración continua
+    function createCelebrationParticles(container) {
+        if (!window.gsap) return;
+        
+        const colors = ['#ff6b95', '#7e57c2', '#00bcd4', '#ff4081', '#9575cd'];
+        
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.innerHTML = Math.random() > 0.5 ? '❤️' : '✨';
+            particle.style.position = 'absolute';
+            particle.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            particle.style.pointerEvents = 'none';
+            
+            gsap.set(particle, {
+                x: Math.random() * window.innerWidth,
+                y: window.innerHeight + 50,
+                opacity: 0.8
+            });
+            
+            container.appendChild(particle);
+            
+            gsap.to(particle, {
+                y: -50,
+                x: `+=${(Math.random() - 0.5) * 200}`,
+                rotation: Math.random() * 720,
+                opacity: 0,
+                duration: Math.random() * 4 + 3,
+                ease: "power2.out",
+                onComplete: () => {
+                    if (particle.parentNode) {
+                        particle.remove();
+                    }
+                }
+            });
+        }
+        
+        // Crear partículas cada 200ms
+        const particleInterval = setInterval(createParticle, 200);
+        
+        // Detener después de 10 segundos
+        setTimeout(() => {
+            clearInterval(particleInterval);
+        }, 10000);
+    }
+    
+    // Resetear estado de la propuesta
+    function resetProposalState() {
+        // Restaurar el estado inicial
+        if (window.gsap) {
+            gsap.to(yesBtn, { scale: 1, duration: 0.3 });
+            gsap.to(noBtn, { opacity: 1, x: 0, y: 0, duration: 0.3 });
+        } else {
+            yesBtn.style.transform = "";
+            noBtn.style.opacity = "1";
+            noBtn.style.transform = "";
+        }
+        
+        // Habilitar los botones nuevamente
+        yesBtn.disabled = false;
+        noBtn.disabled = false;
+        
+        // Resetear el mensaje
+        proposalMessage.innerHTML = "";
+        if (window.gsap) {
+            gsap.set(proposalMessage, { opacity: 0 });
+        }
+        
+        // Marcar celebración como inactiva
+        celebrationActive = false;
     }
     
     // Exponer funciones públicas
     return {
-        init: init
+        init: init,
+        createEnhancedConfetti: createEnhancedConfetti
     };
 })();
 
