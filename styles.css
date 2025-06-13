@@ -1,24 +1,24 @@
 /* Importar fuente moderna de Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-/* Definición de variables globales modernizadas */
+/* Definición de variables globales modernizadas con mejor legibilidad */
 :root {
-    /* Paleta de colores moderna y vibrante */
-    --primary-color: #6366f1; /* Indigo vibrante */
-    --secondary-color: #ec4899; /* Pink vibrante */
-    --accent-color: #06b6d4; /* Cyan moderno */
-    --background-color: #0f172a; /* Slate oscuro */
-    --surface-color: rgba(255, 255, 255, 0.05); /* Glassmorphism */
-    --surface-hover: rgba(255, 255, 255, 0.1);
-    --text-color: #f8fafc; /* Texto claro */
-    --text-secondary: #cbd5e1; /* Texto secundario */
-    --gradient-primary: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
-    --gradient-secondary: linear-gradient(135deg, #06b6d4, #3b82f6, #6366f1);
-    --gradient-accent: radial-gradient(circle at 20% 80%, #6366f1 0%, transparent 50%),
-                      radial-gradient(circle at 80% 20%, #ec4899 0%, transparent 50%),
-                      radial-gradient(circle at 40% 40%, #06b6d4 0%, transparent 50%);
-    --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
-    --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    /* Paleta de colores moderna y legible */
+    --primary-color: #ff6b95; /* Rosa romántico */
+    --secondary-color: #7e57c2; /* Púrpura elegante */
+    --accent-color: #00bcd4; /* Cyan suave */
+    --background-color: #1a1625; /* Fondo oscuro pero no tan intenso */
+    --surface-color: rgba(255, 255, 255, 0.12); /* Glassmorphism más visible */
+    --surface-hover: rgba(255, 255, 255, 0.18);
+    --text-color: #ffffff; /* Texto completamente blanco para mejor contraste */
+    --text-secondary: #e2e8f0; /* Texto secundario más claro */
+    --gradient-primary: linear-gradient(135deg, #ff6b95, #7e57c2, #ff8a80);
+    --gradient-secondary: linear-gradient(135deg, #00bcd4, #7e57c2, #ff6b95);
+    --gradient-accent: radial-gradient(circle at 20% 80%, rgba(255, 107, 149, 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 20%, rgba(126, 87, 194, 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 40%, rgba(0, 188, 212, 0.15) 0%, transparent 50%);
+    --shadow-glow: 0 0 40px rgba(255, 107, 149, 0.25);
+    --shadow-card: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     --border-radius: 24px;
     --border-radius-lg: 32px;
     
@@ -54,7 +54,7 @@ body {
     position: relative;
 }
 
-/* Efecto de glassmorphism para el fondo */
+/* Efecto de glassmorphism mejorado para mejor legibilidad */
 body::before {
     content: '';
     position: fixed;
@@ -63,9 +63,9 @@ body::before {
     right: 0;
     bottom: 0;
     background: 
-        radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 25%),
-        radial-gradient(circle at 75% 75%, rgba(236, 72, 153, 0.1) 0%, transparent 25%),
-        radial-gradient(circle at 75% 25%, rgba(6, 182, 212, 0.1) 0%, transparent 25%);
+        radial-gradient(circle at 25% 25%, rgba(255, 107, 149, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 75% 75%, rgba(126, 87, 194, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 75% 25%, rgba(0, 188, 212, 0.08) 0%, transparent 25%);
     pointer-events: none;
     z-index: -2;
 }
@@ -129,14 +129,14 @@ body::before {
     filter: blur(0.5px);
 }
 
-/* Badge de versión modernizado */
+/* Badge de versión modernizado con mejor contraste */
 .version-badge {
     position: fixed;
     top: 1.5rem;
     right: 1.5rem;
-    background: var(--surface-color);
+    background: rgba(255, 255, 255, 0.15); /* Mejor contraste */
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde más visible */
     color: var(--text-color);
     padding: 0.75rem 1.25rem;
     border-radius: var(--border-radius);
@@ -154,17 +154,17 @@ body::before {
     transform: translateX(0) scale(1.05);
 }
 
-/* Contador de tiempo modernizado */
+/* Contador de tiempo modernizado con mejor contraste */
 .counter-container {
     text-align: center;
     margin: 2rem 1rem;
     padding: 2.5rem;
-    background: var(--surface-color);
+    background: rgba(255, 255, 255, 0.15); /* Más opaco para mejor legibilidad */
     backdrop-filter: blur(20px);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-card);
     width: min(90%, 700px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde más visible */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(50px);
     opacity: 0;
@@ -213,16 +213,16 @@ body::before {
     text-shadow: 0 0 20px rgba(248, 250, 252, 0.1);
 }
 
-/* Carrusel modernizado */
+/* Carrusel modernizado con mejor contraste */
 .carousel-container {
     margin: 2rem auto;
     width: min(90%, 600px);
-    background: var(--surface-color);
+    background: rgba(255, 255, 255, 0.15); /* Más opaco */
     backdrop-filter: blur(20px);
     border-radius: var(--border-radius-lg);
     padding: 1.5rem;
     box-shadow: var(--shadow-card);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde más visible */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
     transform: translateY(50px);
@@ -311,14 +311,14 @@ body::before {
     opacity: 1;
 }
 
-/* Controles del carrusel modernizados */
+/* Controles del carrusel modernizados con mejor contraste */
 .carousel-control {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: var(--surface-color);
+    background: rgba(255, 255, 255, 0.15); /* Mejor contraste */
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde más visible */
     width: clamp(48px, 8vw, 56px);
     height: clamp(48px, 8vw, 56px);
     cursor: pointer;
@@ -329,7 +329,7 @@ body::before {
     justify-content: center;
     font-size: clamp(1.1rem, 2vw, 1.4rem);
     color: var(--text-color);
-    opacity: 0.8;
+    opacity: 0.9; /* Más visible */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
@@ -357,9 +357,9 @@ body::before {
 }
 
 .heart-btn {
-    background: var(--surface-color);
+    background: rgba(255, 255, 255, 0.15); /* Mejor contraste */
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde más visible */
     cursor: pointer;
     font-size: clamp(3rem, 7vw, 5rem);
     color: var(--secondary-color);
@@ -367,7 +367,7 @@ body::before {
     padding: 1.5rem;
     border-radius: 50%;
     touch-action: manipulation;
-    filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.3));
+    filter: drop-shadow(0 0 20px rgba(255, 107, 149, 0.4));
     position: relative;
     width: clamp(120px, 15vw, 160px);
     height: clamp(120px, 15vw, 160px);
@@ -424,17 +424,17 @@ body::before {
     }
 }
 
-/* Sección de próximas características modernizada */
+/* Sección de próximas características modernizada con mejor contraste */
 .coming-soon {
     margin: 2rem auto;
     padding: 2.5rem;
-    background: var(--surface-color);
+    background: rgba(255, 255, 255, 0.15); /* Más opaco */
     backdrop-filter: blur(20px);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-card);
     width: min(90%, 700px);
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde más visible */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transform: translateY(50px);
     opacity: 0;
@@ -482,8 +482,8 @@ body::before {
 .preview-image {
     width: 100%;
     height: 200px;
-    background: var(--surface-color);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1); /* Más sutil para mejor contraste con corazones */
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--border-radius);
     margin: 2rem 0;
     display: flex;
@@ -531,17 +531,17 @@ body::before {
     100% { transform: rotate(360deg); }
 }
 
-/* Pie de página modernizado */
+/* Pie de página modernizado con mejor contraste */
 .footer {
     margin-top: 3rem;
     padding: 2rem;
     text-align: center;
     width: 100%;
     font-size: 1rem;
-    color: var(--text-secondary);
-    background: var(--surface-color);
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.15); /* Mejor contraste */
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Borde más visible */
     border-radius: var(--border-radius);
     transform: translateY(30px);
     opacity: 0;
