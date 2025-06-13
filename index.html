@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Una página especial para celebrar nuestro amor y contar el tiempo juntos">
     <title>Nuestro Amor</title>
+    
+    <!-- Preconnect para optimizar la carga de fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Fuente moderna Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- GSAP Libraries -->
@@ -18,20 +27,30 @@
     <link rel="stylesheet" href="proposal.css">
     <link rel="stylesheet" href="special-events.css">
     <link rel="stylesheet" href="responsive-css.css">
+    
+    <!-- Meta tags adicionales para mejor SEO y rendimiento -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="color-scheme" content="dark light">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
-    <div class="version-badge" id="version-badge">Versión 2.0</div>
+    <!-- Badge de versión modernizado -->
+    <div class="version-badge" id="version-badge">Versión 2.1 ✨</div>
     
+    <!-- Fondo de flores -->
     <div class="flowers" id="flowers"></div>
     
     <!-- Contenedor de partículas dinámicas -->
     <div class="dynamic-particles" id="dynamic-particles"></div>
     
+    <!-- Contador principal -->
     <div class="counter-container" id="counter-container">
-        <h2 id="main-title">Nuestro Amor</h2>
+        <h2 id="main-title">💕 Nuestro Amor 💕</h2>
         <div class="counter" id="counter"></div>
     </div>
 
+    <!-- Carrusel de fotos -->
     <div class="carousel-container" id="carousel-container">
         <div class="carousel" id="carousel">
             <div class="carousel-inner" id="carousel-inner">
@@ -46,6 +65,7 @@
         </div>
     </div>
 
+    <!-- Botón de corazón central -->
     <div class="heart-container" id="heart-container">
         <button class="heart-btn" id="heart-btn" aria-label="Cambiar color del corazón">
             <i class="fas fa-heart"></i>
@@ -55,30 +75,39 @@
     <!-- Sección de propuesta -->
     <div class="proposal-container" id="proposal-container" style="display: none;">
         <div class="proposal-card" id="proposal-card">
-            <h3 id="proposal-title">¿Quieres ser mi novia?</h3>
+            <h3 id="proposal-title">💍 ¿Quieres ser mi novia? 💍</h3>
             <div class="proposal-image" id="proposal-image">
-                <i class="fas fa-heart-circle-check fa-3x"></i>
+                <i class="fas fa-heart-circle-check"></i>
             </div>
             <div class="proposal-buttons" id="proposal-buttons">
-                <button class="proposal-btn yes-btn" id="yes-btn">SÍ</button>
-                <button class="proposal-btn no-btn" id="no-btn">NO</button>
+                <button class="proposal-btn yes-btn" id="yes-btn">
+                    <i class="fas fa-heart"></i> SÍ
+                </button>
+                <button class="proposal-btn no-btn" id="no-btn">
+                    <i class="fas fa-times"></i> NO
+                </button>
             </div>
             <div class="proposal-message" id="proposal-message"></div>
         </div>
     </div>
 
+    <!-- Sección de actualizaciones futuras -->
     <div class="coming-soon" id="coming-soon">
-        <h3 id="features-title">Actualizaciones Futuras</h3>
-        <p id="features-description">Estamos preparando nuevas sorpresas para celebrar nuestro amor.</p>
+        <h3 id="features-title">🚀 Próximas Sorpresas</h3>
+        <p id="features-description">Estamos preparando nuevas funcionalidades mágicas para celebrar nuestro amor de maneras aún más especiales.</p>
         <div class="preview-image" id="preview-image">
-            <i class="fas fa-gift fa-3x"></i>
+            <i class="fas fa-sparkles"></i>
         </div>
-        <p id="features-subtitle">¡Mantente atenta para ver más momentos especiales!</p>
+        <p id="features-subtitle">✨ ¡Mantente atenta para descubrir más momentos únicos! ✨</p>
     </div>
 
+    <!-- Pie de página -->
     <footer class="footer" id="footer">
-        <p>Creado con <i class="fas fa-heart" id="footer-heart"></i> para ti</p>
+        <p>Creado con <i class="fas fa-heart" id="footer-heart"></i> especialmente para ti</p>
         <p class="footer-date" id="current-date"></p>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 0.5rem;">
+            💫 Cada momento juntos es magia pura 💫
+        </p>
     </footer>
 
     <!-- Scripts JS separados para mejor rendimiento -->
@@ -94,6 +123,60 @@
             month: 'long', 
             year: 'numeric' 
         });
+        
+        // Agregar efectos de carga modernos
+        window.addEventListener('load', function() {
+            document.body.style.opacity = '1';
+            
+            // Pequeña animación de bienvenida
+            if (window.gsap) {
+                gsap.fromTo('body', 
+                    { opacity: 0 }, 
+                    { opacity: 1, duration: 1, ease: "power2.out" }
+                );
+                
+                // Confeti de bienvenida sutil
+                setTimeout(() => {
+                    if (window.GSAPAnimations && window.GSAPAnimations.createGSAPConfetti) {
+                        // Crear solo unos pocos confetis de bienvenida
+                        for (let i = 0; i < 20; i++) {
+                            setTimeout(() => {
+                                const colors = ['#6366f1', '#ec4899', '#06b6d4'];
+                                const confetti = document.createElement('div');
+                                confetti.style.position = 'fixed';
+                                confetti.style.width = '6px';
+                                confetti.style.height = '6px';
+                                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                                confetti.style.borderRadius = '50%';
+                                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                                confetti.style.top = '-10px';
+                                confetti.style.pointerEvents = 'none';
+                                confetti.style.zIndex = '1000';
+                                confetti.style.filter = 'drop-shadow(0 0 5px currentColor)';
+                                
+                                document.body.appendChild(confetti);
+                                
+                                gsap.to(confetti, {
+                                    y: window.innerHeight + 20,
+                                    rotation: Math.random() * 360,
+                                    duration: Math.random() * 2 + 2,
+                                    ease: "power2.in",
+                                    onComplete: () => confetti.remove()
+                                });
+                            }, Math.random() * 2000);
+                        }
+                    }
+                }, 1000);
+            }
+        });
+        
+        // Optimización de rendimiento
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                // Registrar service worker solo si es necesario
+                // navigator.serviceWorker.register('/sw.js');
+            });
+        }
     </script>
 </body>
 </html>

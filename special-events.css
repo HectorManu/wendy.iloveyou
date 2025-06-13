@@ -1,0 +1,441 @@
+/* 
+ * special-events.css - Estilos modernizados para eventos especiales
+ * San Valentín y Día de las Flores Amarillas con diseño glassmorphism
+ */
+
+/* Tema de San Valentín modernizado */
+.valentine-theme {
+    --primary-color: #f43f5e; /* Rose vibrante */
+    --secondary-color: #ec4899; /* Pink brillante */
+    --accent-color: #fb7185; /* Rose claro */
+    --valentine-glow: 0 0 40px rgba(244, 63, 94, 0.3);
+}
+
+.valentine-theme .counter-container,
+.valentine-theme .carousel-container,
+.valentine-theme .coming-soon,
+.valentine-theme .proposal-card {
+    box-shadow: var(--shadow-card), var(--valentine-glow);
+    border-color: rgba(244, 63, 94, 0.3);
+}
+
+.valentine-theme .counter-container::before,
+.valentine-theme .carousel-container::before,
+.valentine-theme .coming-soon::before,
+.valentine-theme .proposal-card::before {
+    background: linear-gradient(135deg, #f43f5e, #ec4899, #fb7185);
+}
+
+.valentine-theme .heart-btn {
+    color: #f43f5e;
+    filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.5));
+    animation: valentine-pulse 1.5s infinite;
+}
+
+@keyframes valentine-pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 25px rgba(244, 63, 94, 0.5));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 40px rgba(244, 63, 94, 0.8));
+    }
+}
+
+/* Corazones cayendo para San Valentín */
+.falling-hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.falling-hearts .heart {
+    position: absolute;
+    color: #f43f5e;
+    font-size: 20px;
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px rgba(244, 63, 94, 0.5));
+    animation: fall-valentine 8s linear infinite;
+}
+
+.falling-hearts .heart::before {
+    content: '♥';
+}
+
+@keyframes fall-valentine {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.7;
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Tema de Flores Amarillas modernizado */
+.yellow-flowers-theme {
+    --primary-color: #facc15; /* Yellow vibrante */
+    --secondary-color: #f59e0b; /* Amber */
+    --accent-color: #fbbf24; /* Yellow brillante */
+    --flowers-glow: 0 0 40px rgba(250, 204, 21, 0.3);
+}
+
+.yellow-flowers-theme .counter-container,
+.yellow-flowers-theme .carousel-container,
+.yellow-flowers-theme .coming-soon,
+.yellow-flowers-theme .proposal-card {
+    box-shadow: var(--shadow-card), var(--flowers-glow);
+    border-color: rgba(250, 204, 21, 0.3);
+}
+
+.yellow-flowers-theme .counter-container::before,
+.yellow-flowers-theme .carousel-container::before,
+.yellow-flowers-theme .coming-soon::before,
+.yellow-flowers-theme .proposal-card::before {
+    background: linear-gradient(135deg, #facc15, #f59e0b, #fbbf24);
+}
+
+.yellow-flowers-theme .heart-btn {
+    animation: flowers-pulse 2s infinite;
+}
+
+@keyframes flowers-pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 20px rgba(250, 204, 21, 0.4));
+    }
+    50% {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 35px rgba(250, 204, 21, 0.7));
+    }
+}
+
+/* Icono de flor amarilla modernizado */
+.yellow-flower-icon {
+    font-size: inherit;
+    filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.6));
+    animation: flower-spin 3s ease-in-out infinite;
+}
+
+@keyframes flower-spin {
+    0%, 100% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(5deg) scale(1.1);
+    }
+}
+
+/* Flores amarillas cayendo */
+.falling-flowers {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.falling-flowers .flower {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.4));
+    animation: fall-flowers 10s linear infinite;
+}
+
+.falling-flowers .flower::before {
+    content: '🌻';
+}
+
+@keyframes fall-flowers {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.8;
+    }
+    90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(110vh) rotate(180deg);
+        opacity: 0;
+    }
+}
+
+/* Corazones especiales flotando */
+.special-heart {
+    position: fixed;
+    font-size: 18px;
+    color: #facc15;
+    pointer-events: none;
+    z-index: 6;
+    filter: drop-shadow(0 0 10px rgba(250, 204, 21, 0.5));
+    animation: float-special 6s ease-in-out infinite;
+}
+
+@keyframes float-special {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+/* Mensaje especial de flores amarillas */
+.yellow-flowers-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--surface-color);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(250, 204, 21, 0.3);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem 2.5rem;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: var(--shadow-card), var(--flowers-glow);
+    max-width: 90%;
+    width: 400px;
+    animation: message-appear 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.yellow-flowers-message h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.yellow-flowers-message p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+}
+
+.yellow-flowers-message button {
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+    color: #1e293b;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 20px rgba(250, 204, 21, 0.3);
+}
+
+.yellow-flowers-message button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(250, 204, 21, 0.4);
+}
+
+@keyframes message-appear {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Efectos de partículas para eventos especiales */
+.valentine-flowers .floating-heart {
+    color: #f43f5e;
+    filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.4));
+    animation: valentine-twinkle 3s ease-in-out infinite;
+}
+
+@keyframes valentine-twinkle {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(0.9);
+    }
+    50% {
+        opacity: 0.9;
+        transform: scale(1.2);
+    }
+}
+
+/* Efectos mejorados para partículas de letras */
+.confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.letter-particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+    filter: blur(0.5px) drop-shadow(0 0 5px currentColor);
+    animation: pulse-letter-modern 2s ease-in-out infinite;
+}
+
+@keyframes pulse-letter-modern {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.4);
+        opacity: 1;
+    }
+}
+
+/* Contenedor para cada letra modernizado */
+.letter-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: var(--surface-color);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos específicos para cada letra modernizados */
+.letter-w {
+    --letter-color: #6366f1;
+}
+
+.letter-ampersand {
+    --letter-color: #ec4899;
+}
+
+.letter-h {
+    --letter-color: #06b6d4;
+}
+
+/* Media queries para eventos especiales */
+@media (max-width: 768px) {
+    .falling-hearts .heart,
+    .falling-flowers .flower {
+        font-size: 18px;
+    }
+    
+    .special-heart {
+        font-size: 16px;
+    }
+    
+    .yellow-flowers-message {
+        width: 350px;
+        padding: 1.5rem 2rem;
+    }
+    
+    .yellow-flowers-message h3 {
+        font-size: 1.5rem;
+    }
+    
+    .letter-container {
+        width: 70vw !important;
+        height: 70vw !important;
+        max-width: 300px;
+        max-height: 300px;
+    }
+    
+    .letter-particle {
+        width: 8px !important;
+        height: 8px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .falling-hearts .heart,
+    .falling-flowers .flower {
+        font-size: 16px;
+    }
+    
+    .special-heart {
+        font-size: 14px;
+    }
+    
+    .yellow-flowers-message {
+        width: 300px;
+        padding: 1.2rem 1.5rem;
+    }
+    
+    .yellow-flowers-message h3 {
+        font-size: 1.3rem;
+    }
+    
+    .yellow-flowers-message p {
+        font-size: 1rem;
+    }
+    
+    .yellow-flowers-message button {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .letter-container {
+        width: 80vw !important;
+        height: 80vw !important;
+        max-width: 250px;
+        max-height: 250px;
+    }
+    
+    .letter-particle {
+        width: 6px !important;
+        height: 6px !important;
+    }
+}
+
+/* Efectos de transición suaves para cambios de tema */
+* {
+    transition: 
+        color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tema claro para eventos especiales */
+@media (prefers-color-scheme: light) {
+    .yellow-flowers-message {
+        background: rgba(255, 255, 255, 0.9);
+        color: #1e293b;
+    }
+    
+    .yellow-flowers-message p {
+        color: #64748b;
+    }
+}
