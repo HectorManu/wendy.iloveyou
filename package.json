@@ -1,0 +1,19 @@
+{
+  "name": "nuestro-amor",
+  "version": "2.0.0",
+  "description": "Sitio web romántico para celebrar nuestra relación",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "preact": "^10.16.0",
+    "preact-router": "^4.1.1",
+    "gsap": "^3.12.2"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.5.0",
+    "vite": "^4.4.9"
+  }
+}

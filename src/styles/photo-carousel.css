@@ -1,0 +1,308 @@
+/* Achievement Gallery */
+.achievement-gallery {
+    width: 90%;
+    max-width: 700px;
+    margin: 2rem auto;
+    background-color: var(--card-bg);
+    border-color: var(--neon-purple);
+    overflow: hidden;
+}
+
+/* Gallery Header */
+.gallery-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    border-bottom: 2px solid var(--card-border);
+    font-family: var(--font-pixel);
+}
+
+.gallery-star {
+    color: var(--accent-color);
+    font-size: 0.8rem;
+    text-shadow: 0 0 5px rgba(255, 234, 0, 0.4);
+}
+
+.gallery-title {
+    font-size: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.gallery-count {
+    font-size: 0.5rem;
+}
+
+/* Achievement Viewport */
+.achievement-viewport {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+}
+
+.achievement-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.achievement-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.achievement-slide.active {
+    opacity: 1;
+}
+
+/* Achievement Frame */
+.achievement-frame {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: #080818;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: 2px solid var(--card-border);
+}
+
+.achievement-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    max-height: 65vh;
+    transition: transform 0.3s ease;
+}
+
+.achievement-slide:hover .achievement-frame img {
+    transform: scale(1.03);
+}
+
+/* Scanline overlay on images */
+.image-scanline-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.05) 0px,
+        rgba(0, 0, 0, 0.05) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+}
+
+/* Achievement Info */
+.achievement-info {
+    padding: 0.8rem 1rem;
+    background-color: var(--card-bg);
+    border-top: 2px solid var(--card-border);
+}
+
+.achievement-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.badge-star {
+    font-size: 0.8rem;
+}
+
+.badge-text {
+    font-family: var(--font-pixel);
+    font-size: 0.4rem;
+    color: var(--accent-color);
+    letter-spacing: 1px;
+}
+
+.achievement-caption {
+    font-family: var(--font-terminal);
+    font-size: 1rem;
+    color: var(--text-color);
+    line-height: 1.4;
+    opacity: 0.85;
+    margin: 0;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    background-color: var(--card-bg);
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: var(--secondary-color);
+    cursor: pointer;
+    z-index: 2;
+    font-size: 0.8rem;
+    font-family: var(--font-pixel);
+    transition: box-shadow 0.2s ease;
+}
+
+.nav-btn:hover {
+    box-shadow: 0 0 12px rgba(0, 255, 204, 0.5);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.nav-prev {
+    left: 8px;
+}
+
+.nav-next {
+    right: 8px;
+}
+
+.exit-fullscreen-btn {
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    transform: none !important;
+    background-color: rgba(18, 18, 42, 0.8) !important;
+    color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Dot Indicators */
+.gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 0.6rem;
+    border-top: 2px solid var(--card-border);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--pixel-border);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dot.active {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 6px rgba(255, 234, 0, 0.5);
+}
+
+.dot:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Fullscreen Mode */
+.fullscreen-mode .achievement-frame {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.95);
+    border: none;
+}
+
+.fullscreen-mode .achievement-frame img {
+    max-width: 92vw;
+    max-height: 92vh;
+    object-fit: contain;
+}
+
+/* Loading State */
+.achievement-gallery.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 250px;
+}
+
+.loading-bar-container {
+    text-align: center;
+}
+
+.loading-text {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--secondary-color);
+    display: block;
+    margin-bottom: 0.6rem;
+    animation: pixel-blink 1s step-end infinite;
+}
+
+.loading-bar {
+    width: 200px;
+    height: 12px;
+    background-color: var(--card-border);
+    border: 2px solid var(--pixel-border);
+    overflow: hidden;
+}
+
+.loading-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon-green), var(--secondary-color));
+    animation: loading-progress 2s steps(20) infinite;
+}
+
+@keyframes loading-progress {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .achievement-gallery {
+        width: 95%;
+    }
+
+    .achievement-viewport {
+        aspect-ratio: 1/1;
+    }
+
+    .gallery-title {
+        font-size: 0.4rem;
+    }
+
+    .nav-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .achievement-viewport {
+        aspect-ratio: 3/4;
+    }
+
+    .achievement-info {
+        padding: 0.6rem;
+    }
+
+    .achievement-caption {
+        font-size: 0.9rem;
+    }
+
+    .gallery-header {
+        padding: 0.5rem;
+    }
+}

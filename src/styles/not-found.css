@@ -1,0 +1,64 @@
+/* Game Over / Not Found */
+.not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 60vh;
+}
+
+.game-over-title {
+    font-family: var(--font-pixel);
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+    letter-spacing: 4px;
+    animation: glitch-text 3s ease-in-out infinite;
+}
+
+.game-over-sub {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+}
+
+.not-found .heart-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin: 1.5rem 0;
+    text-shadow: 0 0 15px rgba(255, 45, 123, 0.5);
+    animation: pixel-pulse 2s step-end infinite;
+}
+
+.game-over-message {
+    font-family: var(--font-terminal);
+    color: var(--text-color);
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+}
+
+.not-found .home-link {
+    display: inline-block;
+    margin-top: 1rem;
+    background-color: var(--card-bg);
+    color: var(--secondary-color);
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    border-color: var(--secondary-color);
+    transition: box-shadow 0.2s ease;
+    letter-spacing: 1px;
+}
+
+.not-found .home-link:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+}

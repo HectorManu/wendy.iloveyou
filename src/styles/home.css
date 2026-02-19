@@ -1,0 +1,16 @@
+/* Home page layout - account for fixed HUD */
+.flowers,
+.dynamic-particles {
+    top: 0;
+}
+
+/* Push content below HUD */
+#app > :nth-child(2) {
+    padding-top: 70px;
+}
+
+@media (max-width: 768px) {
+    #app > :nth-child(2) {
+        padding-top: 50px;
+    }
+}

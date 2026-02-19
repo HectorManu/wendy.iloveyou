@@ -1,0 +1,54 @@
+/* Game Credits Footer */
+.game-credits {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: auto;
+    background-color: var(--card-bg);
+    width: 100%;
+    border-top: var(--pixel-size) solid var(--neon-purple);
+    font-family: var(--font-pixel);
+}
+
+.credits-line {
+    font-size: 0.5rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+.pixel-heart {
+    display: inline;
+    font-size: 0.6rem;
+}
+
+.credits-date {
+    font-family: var(--font-terminal);
+    font-size: 1rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    margin-bottom: 0.8rem;
+}
+
+.credits-insert-coin {
+    font-size: 0.45rem;
+    color: var(--accent-color);
+    text-shadow: 0 0 8px rgba(255, 234, 0, 0.3);
+}
+
+.blink-text {
+    animation: pixel-blink 1.5s step-end infinite;
+}
+
+@media (max-width: 768px) {
+    .game-credits {
+        padding: 1rem;
+    }
+
+    .credits-line {
+        font-size: 0.4rem;
+    }
+
+    .credits-insert-coin {
+        font-size: 0.35rem;
+    }
+}

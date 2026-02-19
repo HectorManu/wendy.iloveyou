@@ -1,0 +1,227 @@
+/* Boss Battle Overlay */
+.boss-battle-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.92);
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+/* Boss Battle Card */
+.boss-battle-card {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 30px rgba(255, 45, 123, 0.3);
+}
+
+/* Battle Header */
+.battle-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 1rem;
+}
+
+.battle-stars {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+}
+
+.battle-label {
+    font-family: var(--font-pixel);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    animation: glitch-text 4s ease-in-out infinite;
+}
+
+.battle-stage {
+    font-family: var(--font-pixel);
+    font-size: 0.4rem;
+    color: var(--text-color);
+    opacity: 0.6;
+    letter-spacing: 2px;
+}
+
+/* Boss Sprite */
+.boss-sprite {
+    margin: 1rem 0;
+    color: var(--primary-color);
+    text-shadow: 0 0 15px rgba(255, 45, 123, 0.5);
+    animation: pixel-pulse 1.5s step-end infinite;
+}
+
+/* Boss HP Bar */
+.boss-hp-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+    padding: 0 1rem;
+}
+
+.hp-label {
+    font-family: var(--font-pixel);
+    font-size: 0.4rem;
+    color: var(--primary-color);
+    min-width: 36px;
+}
+
+.hp-bar-track {
+    flex: 1;
+    height: 10px;
+    background-color: var(--card-border);
+    border: 2px solid var(--pixel-border);
+    overflow: hidden;
+}
+
+.hp-bar-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-green), #00ff88);
+    box-shadow: 0 0 5px rgba(57, 255, 20, 0.4);
+}
+
+.hp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,0.15) 3px,
+        rgba(0,0,0,0.15) 5px
+    );
+}
+
+.hp-text {
+    font-family: var(--font-pixel);
+    font-size: 0.35rem;
+    min-width: 52px;
+    text-align: right;
+}
+
+/* Battle Question */
+.battle-question {
+    font-family: var(--font-terminal);
+    color: var(--text-color);
+    margin: 1rem 0;
+    font-size: 1.4rem;
+    line-height: 1.4;
+}
+
+/* Battle Actions */
+.battle-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    position: relative;
+    min-height: 60px;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    cursor: pointer;
+    background-color: var(--card-bg);
+    transition: box-shadow 0.2s ease;
+}
+
+.btn-icon {
+    font-size: 0.7rem;
+}
+
+.attack-btn {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.attack-btn:hover {
+    box-shadow: 0 0 15px rgba(255, 45, 123, 0.5);
+    text-shadow: 0 0 5px var(--primary-color);
+}
+
+.attack-btn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.flee-btn {
+    color: var(--pixel-border);
+    border-color: var(--pixel-border);
+    position: absolute;
+}
+
+.flee-btn:hover {
+    box-shadow: 0 0 10px rgba(58, 58, 92, 0.4);
+}
+
+/* Battle Message */
+.battle-message {
+    margin-top: 1.2rem;
+    display: none;
+}
+
+.victory-text {
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    letter-spacing: 1px;
+    animation: glitch-text 0.5s ease-in-out;
+}
+
+/* Pixel Confetti */
+.pixel-confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    border-radius: 0;
+    z-index: 1001;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .boss-battle-card {
+        padding: 1rem;
+        width: 95%;
+    }
+
+    .battle-label {
+        font-size: 0.6rem;
+    }
+
+    .battle-actions {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .action-btn {
+        width: 80%;
+        justify-content: center;
+    }
+
+    .flee-btn {
+        position: relative;
+    }
+}

@@ -1,0 +1,73 @@
+/* Power-Up Button */
+.powerup-container {
+    text-align: center;
+    margin: 2rem 0;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.powerup-label {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--secondary-color);
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+    animation: pixel-blink 2s step-end infinite;
+    letter-spacing: 2px;
+}
+
+.powerup-btn {
+    background-color: var(--card-bg);
+    font-size: 3rem;
+    cursor: pointer;
+    height: 90px;
+    width: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s ease;
+    animation: pixel-pulse 2s step-end infinite;
+}
+
+.powerup-btn:hover {
+    transform: scale(1.08);
+}
+
+.powerup-btn:focus {
+    outline: none;
+}
+
+.powerup-btn:active {
+    transform: scale(0.95);
+}
+
+.powerup-counter {
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    text-shadow: 0 0 5px currentColor;
+}
+
+/* Pixel Particles */
+.pixel-particle {
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+    font-size: 1rem;
+    font-family: var(--font-pixel);
+    -webkit-font-smoothing: none;
+}
+
+@media (max-width: 480px) {
+    .powerup-btn {
+        height: 70px;
+        width: 70px;
+        font-size: 2.2rem;
+    }
+
+    .powerup-label {
+        font-size: 0.4rem;
+    }
+}
