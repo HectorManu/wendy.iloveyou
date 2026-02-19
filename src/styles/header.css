@@ -57,6 +57,39 @@
     letter-spacing: 3px;
 }
 
+.hud-game-title {
+    text-decoration: none;
+}
+
+.hud-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 2px;
+}
+
+.hud-nav-link {
+    font-family: var(--font-pixel);
+    font-size: 0.3rem;
+    color: var(--text-color);
+    text-decoration: none;
+    opacity: 0.6;
+    letter-spacing: 1px;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.hud-nav-link:hover {
+    opacity: 1;
+    color: var(--secondary-color);
+    text-shadow: 0 0 5px var(--secondary-color);
+}
+
+.hud-nav-sep {
+    font-family: var(--font-pixel);
+    font-size: 0.3rem;
+    color: var(--pixel-border);
+}
+
 .hud-version {
     font-size: 0.5rem;
     color: var(--neon-green);
@@ -80,6 +113,10 @@
 
     .hud-subtitle {
         font-size: 0.35rem;
+    }
+
+    .hud-nav-link {
+        font-size: 0.25rem;
     }
 }
 

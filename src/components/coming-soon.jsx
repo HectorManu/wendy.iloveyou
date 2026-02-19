@@ -25,6 +25,24 @@ export function ComingSoon() {
 
   return (
     <div className="locked-levels pixel-border" ref={containerRef}>
+      <div className="unlocked-header">
+        <span className="unlocked-badge neon-text-green">NUEVO DLC DISPONIBLE!</span>
+        <span className="unlocked-name neon-text-cyan">SALA DE JUEGOS</span>
+      </div>
+
+      <a href="/arcade" className="arcade-link pixel-border">
+        <div className="arcade-link-icon">
+          <i className="fas fa-gamepad"></i>
+        </div>
+        <div className="arcade-link-info">
+          <span className="arcade-link-name neon-text-pink">ARCADE</span>
+          <span className="arcade-link-desc">4 mini-juegos para jugar!</span>
+        </div>
+        <div className="arcade-link-arrow neon-text-yellow">
+          {'\u25BA'}
+        </div>
+      </a>
+
       <div className="locked-header">
         <span className="locked-title neon-text-purple">CONTENIDO BLOQUEADO</span>
         <span className="locked-subtitle">PROXIMO DLC</span>

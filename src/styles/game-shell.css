@@ -1,0 +1,124 @@
+/* Game Shell Wrapper */
+.game-shell {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 1rem 2rem;
+  min-height: 100vh;
+}
+
+.game-shell-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.5rem;
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+.game-back-btn {
+  font-family: var(--font-pixel);
+  font-size: 0.4rem;
+  text-decoration: none;
+  letter-spacing: 1px;
+  transition: text-shadow 0.2s ease;
+}
+
+.game-back-btn:hover {
+  text-shadow: 0 0 10px var(--secondary-color);
+}
+
+.game-shell-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.game-shell-title i {
+  color: var(--accent-color);
+  font-size: 1rem;
+}
+
+.game-shell-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.timer-label {
+  font-family: var(--font-pixel);
+  font-size: 0.3rem;
+  color: var(--text-color);
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+
+.timer-value {
+  font-family: var(--font-pixel);
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .game-shell {
+    padding: 60px 0.5rem 1.5rem;
+  }
+
+  .game-shell-header {
+    padding: 0.5rem 0.6rem;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .game-shell-title {
+    font-size: 0.4rem;
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .game-back-btn {
+    font-size: 0.35rem;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+  }
+
+  .timer-value {
+    font-size: 0.4rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .game-shell {
+    padding: 55px 0.4rem 1rem;
+  }
+
+  .game-shell-header {
+    padding: 0.4rem 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .game-shell-title {
+    font-size: 0.35rem;
+  }
+
+  .game-shell-title i {
+    font-size: 0.8rem;
+  }
+
+  .game-back-btn {
+    font-size: 0.3rem;
+  }
+}
+
+/* Touch optimization */
+.game-back-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}

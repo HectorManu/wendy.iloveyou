@@ -1,0 +1,194 @@
+/* Word Search */
+.ws-puzzle-name {
+  text-align: center;
+  font-family: var(--font-pixel);
+  font-size: 0.4rem;
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
+}
+
+.ws-layout {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Grid */
+.ws-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ws-row {
+  display: flex;
+  gap: 2px;
+}
+
+.ws-cell {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-pixel);
+  font-size: 0.4rem;
+  color: var(--text-color);
+  background-color: var(--card-bg);
+  border: 2px solid var(--card-border);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  padding: 0;
+  border-radius: 0;
+}
+
+.ws-cell:hover {
+  border-color: var(--secondary-color);
+  background-color: rgba(0, 255, 204, 0.1);
+}
+
+.ws-cell.selected {
+  border-color: var(--accent-color);
+  background-color: rgba(255, 234, 0, 0.15);
+  box-shadow: 0 0 8px rgba(255, 234, 0, 0.3);
+}
+
+.ws-cell.found {
+  background-color: rgba(57, 255, 20, 0.15);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  text-shadow: 0 0 5px rgba(57, 255, 20, 0.5);
+}
+
+/* Word List */
+.ws-words {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+  padding: 1rem;
+  min-width: 160px;
+}
+
+.ws-words-title {
+  font-family: var(--font-pixel);
+  font-size: 0.35rem;
+  letter-spacing: 1px;
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+.ws-words-count {
+  font-family: var(--font-terminal);
+  font-size: 1rem;
+  color: var(--text-color);
+  opacity: 0.6;
+  text-align: center;
+  margin-bottom: 0.8rem;
+}
+
+.ws-word-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ws-word-item {
+  font-family: var(--font-pixel);
+  font-size: 0.3rem;
+  color: var(--text-color);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.4rem;
+  transition: opacity 0.2s ease;
+}
+
+.ws-word-item.found {
+  color: var(--neon-green);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.ws-word-item.found i {
+  color: var(--neon-green);
+  font-size: 0.6rem;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .ws-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ws-cell {
+    width: 30px;
+    height: 30px;
+    font-size: 0.35rem;
+  }
+
+  .ws-words {
+    min-width: auto;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .ws-word-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+
+  .ws-word-item {
+    padding: 0.2rem 0.3rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .ws-cell {
+    width: 28px;
+    height: 28px;
+    font-size: 0.3rem;
+    border-width: 1px;
+  }
+
+  .ws-row {
+    gap: 1px;
+  }
+
+  .ws-grid {
+    gap: 1px;
+  }
+
+  .ws-puzzle-name {
+    font-size: 0.35rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .ws-words {
+    padding: 0.7rem;
+  }
+
+  .ws-words-title {
+    font-size: 0.3rem;
+  }
+
+  .ws-word-item {
+    font-size: 0.25rem;
+    padding: 0.2rem;
+  }
+}
+
+/* Touch targets - ensure min 44px for cells */
+.ws-cell {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  min-width: 28px;
+  min-height: 28px;
+}

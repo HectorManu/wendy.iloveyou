@@ -9,12 +9,16 @@ export function Header() {
         <span className="hud-player-name">W & H</span>
       </div>
       <div className="hud-center">
-        <span className="hud-game-title neon-text-pink">NUESTRO AMOR</span>
-        <span className="hud-subtitle">THE GAME</span>
+        <a href="/" className="hud-game-title neon-text-pink">NUESTRO AMOR</a>
+        <div className="hud-nav">
+          <a href="/" className="hud-nav-link">INICIO</a>
+          <span className="hud-nav-sep">|</span>
+          <a href="/arcade" className="hud-nav-link">ARCADE</a>
+        </div>
       </div>
       <div className="hud-right">
         <span className="hud-label">VER</span>
-        <span className="hud-version">v2.0</span>
+        <span className="hud-version">v2.1</span>
       </div>
     </div>
   );
