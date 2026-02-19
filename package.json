@@ -1,6 +1,7 @@
 {
   "name": "nuestro-amor",
   "version": "2.0.0",
+  "type": "module",
   "description": "Sitio web romántico para celebrar nuestra relación",
   "scripts": {
     "start": "vite",
