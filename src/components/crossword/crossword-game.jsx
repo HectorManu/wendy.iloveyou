@@ -29,6 +29,7 @@ export function CrosswordGame() {
 
   const [activeClue, setActiveClue] = useState(null);
   const [solvedClues, setSolvedClues] = useState([]);
+  const [hintsUsed, setHintsUsed] = useState([]);
   const [gameComplete, setGameComplete] = useState(false);
   const [finalTime, setFinalTime] = useState(null);
   const [finalScore, setFinalScore] = useState(0);
@@ -69,7 +70,6 @@ export function CrosswordGame() {
     newGrid[row][col] = value.toUpperCase();
     setPlayerGrid(newGrid);
 
-    // Check if any clue is now complete and correct
     allClues.forEach(clue => {
       const key = `${clue.number}-${clue.direction}`;
       if (solvedClues.includes(key)) return;
@@ -88,7 +88,6 @@ export function CrosswordGame() {
   }, [playerGrid, allClues, solvedClues]);
 
   const handleCellClick = useCallback((row, col) => {
-    // Find a clue that passes through this cell
     const matching = allClues.find(clue => {
       for (let i = 0; i < clue.length; i++) {
         const r = clue.direction === 'across' ? clue.row : clue.row + i;
@@ -100,30 +99,62 @@ export function CrosswordGame() {
     if (matching) setActiveClue(matching);
   }, [allClues]);
 
+  // Hint: reveal first letter of active clue
+  const handleHint = useCallback(() => {
+    if (!activeClue) return;
+    const key = `${activeClue.number}-${activeClue.direction}`;
+    if (hintsUsed.includes(key)) return;
+
+    const r = activeClue.row;
+    const c = activeClue.col;
+    const firstLetter = activeClue.answer[0];
+
+    const newGrid = playerGrid.map(row => [...row]);
+    newGrid[r][c] = firstLetter;
+    setPlayerGrid(newGrid);
+    setHintsUsed(prev => [...prev, key]);
+
+    // Check if this completes any clue
+    allClues.forEach(clue => {
+      const clueKey = `${clue.number}-${clue.direction}`;
+      if (solvedClues.includes(clueKey)) return;
+      let word = '';
+      for (let i = 0; i < clue.length; i++) {
+        const cr = clue.direction === 'across' ? clue.row : clue.row + i;
+        const cc = clue.direction === 'across' ? clue.col + i : clue.col;
+        word += newGrid[cr][cc];
+      }
+      if (word === clue.answer) {
+        setSolvedClues(prev => [...prev, clueKey]);
+      }
+    });
+  }, [activeClue, hintsUsed, playerGrid, allClues, solvedClues]);
+
   const handleGameComplete = useCallback((elapsedTime, stopTimer) => {
     if (gameComplete) return;
     stopTimer();
     const totalClues = allClues.length;
-    const score = (totalClues * 150) + Math.max(0, (600 - elapsedTime) * 2);
+    const score = (totalClues * 150) + Math.max(0, (600 - elapsedTime) * 2) - (hintsUsed.length * 30);
     let xp = totalClues * 15 + 150;
     if (elapsedTime < 300) xp += 75;
+    xp -= hintsUsed.length * 5;
 
     setFinalTime(elapsedTime);
     setFinalScore(Math.max(0, score));
-    setFinalXP(xp);
+    setFinalXP(Math.max(xp, totalClues * 10));
     setGameComplete(true);
 
     recordGameResult('crossword', {
       won: true,
       score: Math.max(0, score),
-      xp,
+      xp: Math.max(xp, totalClues * 10),
       time: elapsedTime,
       extraStats: {
         totalCluesSolved: totalClues,
         puzzlesCompleted: [puzzle.id]
       }
     });
-  }, [gameComplete, allClues, puzzle, recordGameResult]);
+  }, [gameComplete, allClues, puzzle, hintsUsed, recordGameResult]);
 
   const resetGame = useCallback(() => {
     const newIndex = Math.floor(Math.random() * crosswordPuzzles.length);
@@ -138,11 +169,11 @@ export function CrosswordGame() {
     );
     setActiveClue(null);
     setSolvedClues([]);
+    setHintsUsed([]);
     setGameComplete(false);
     setFinalTime(null);
   }, []);
 
-  // Number map for grid
   const numberMap = useMemo(() => {
     const map = {};
     allClues.forEach(clue => {
@@ -151,6 +182,10 @@ export function CrosswordGame() {
     });
     return map;
   }, [allClues]);
+
+  const activeClueKey = activeClue ? `${activeClue.number}-${activeClue.direction}` : null;
+  const hintAlreadyUsed = activeClueKey ? hintsUsed.includes(activeClueKey) : false;
+  const clueAlreadySolved = activeClueKey ? solvedClues.includes(activeClueKey) : false;
 
   return (
     <GameShell title="CRUCIGRAMA" icon="fas fa-border-all">
@@ -164,6 +199,35 @@ export function CrosswordGame() {
             <div className="cw-progress">
               {solvedClues.length} / {allClues.length} pistas resueltas
             </div>
+
+            {/* Active clue bar - visible on mobile */}
+            {activeClue && (
+              <div className="cw-active-clue pixel-border">
+                <div className="cw-active-clue-info">
+                  <span className="cw-active-clue-num neon-text-yellow">
+                    {activeClue.number}. {activeClue.direction === 'across' ? '\u2192' : '\u2193'}
+                  </span>
+                  <span className="cw-active-clue-text">{activeClue.clue}</span>
+                </div>
+                {activeClue.hint && !clueAlreadySolved && (
+                  <button
+                    className={`cw-hint-btn pixel-border ${hintAlreadyUsed ? 'used' : ''}`}
+                    onClick={handleHint}
+                    disabled={hintAlreadyUsed}
+                  >
+                    <i className="fas fa-lightbulb"></i>
+                    {hintAlreadyUsed ? ' USADA' : ' PISTA'}
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Hint text when used */}
+            {activeClue && activeClue.hint && hintAlreadyUsed && !clueAlreadySolved && (
+              <div className="cw-hint-text neon-text-yellow">
+                <i className="fas fa-lightbulb"></i> {activeClue.hint}
+              </div>
+            )}
 
             <div className="cw-layout">
               <CrosswordGrid
@@ -189,7 +253,7 @@ export function CrosswordGame() {
                 score={finalScore}
                 xp={finalXP}
                 time={finalTime}
-                message="Crucigrama completado!"
+                message={hintsUsed.length === 0 ? 'Sin pistas! Increible!' : 'Crucigrama completado!'}
                 onPlayAgain={resetGame}
               />
             )}

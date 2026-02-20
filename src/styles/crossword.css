@@ -13,9 +13,90 @@
   font-size: 1rem;
   color: var(--text-color);
   opacity: 0.6;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 }
 
+/* Active Clue Bar */
+.cw-active-clue {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  margin-bottom: 1rem;
+  background-color: var(--card-bg);
+  border-color: var(--secondary-color);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cw-active-clue-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.cw-active-clue-num {
+  font-family: var(--font-pixel);
+  font-size: 0.35rem;
+  white-space: nowrap;
+}
+
+.cw-active-clue-text {
+  font-family: var(--font-terminal);
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+/* Hint Button */
+.cw-hint-btn {
+  font-family: var(--font-pixel);
+  font-size: 0.25rem;
+  color: var(--accent-color);
+  background-color: rgba(0, 0, 0, 0.3);
+  border-color: var(--accent-color);
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.cw-hint-btn:hover:not(:disabled) {
+  box-shadow: 0 0 12px rgba(255, 234, 0, 0.4);
+}
+
+.cw-hint-btn.used {
+  opacity: 0.4;
+  cursor: default;
+  border-color: var(--pixel-border);
+  color: var(--pixel-border);
+}
+
+.cw-hint-btn i {
+  font-size: 0.7rem;
+}
+
+/* Hint Text */
+.cw-hint-text {
+  text-align: center;
+  font-family: var(--font-terminal);
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  padding: 0.3rem 0.6rem;
+  opacity: 0.85;
+}
+
+.cw-hint-text i {
+  margin-right: 0.3rem;
+}
+
+/* Layout */
 .cw-layout {
   display: flex;
   gap: 1.5rem;
@@ -23,19 +104,21 @@
   align-items: flex-start;
 }
 
-/* Grid */
+/* Grid - uses calc for responsive sizing */
 .cw-grid {
   display: grid;
-  grid-template-columns: repeat(var(--cw-size), 38px);
+  grid-template-columns: repeat(var(--cw-size), 40px);
   gap: 2px;
 }
 
 .cw-cell {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   position: relative;
   background-color: var(--card-bg);
   border: 2px solid var(--card-border);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .cw-cell.black {
@@ -58,7 +141,7 @@
   top: 1px;
   left: 2px;
   font-family: var(--font-pixel);
-  font-size: 0.2rem;
+  font-size: 0.18rem;
   color: var(--accent-color);
   pointer-events: none;
   z-index: 1;
@@ -77,6 +160,9 @@
   outline: none;
   text-transform: uppercase;
   padding: 0;
+  -webkit-appearance: none;
+  border-radius: 0;
+  touch-action: manipulation;
 }
 
 .cw-cell-input:focus {
@@ -92,7 +178,7 @@
 .cw-clues {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
   min-width: 200px;
   max-width: 250px;
 }
@@ -100,24 +186,27 @@
 .cw-clue-section {
   background-color: var(--card-bg);
   border: var(--pixel-size) solid var(--card-border);
-  padding: 0.8rem;
+  padding: 0.6rem;
 }
 
 .cw-clue-header {
   font-family: var(--font-pixel);
-  font-size: 0.3rem;
+  font-size: 0.28rem;
   letter-spacing: 1px;
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.5rem;
 }
 
 .cw-clue-item {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.4rem;
-  padding: 0.3rem 0.4rem;
+  padding: 0.4rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.2rem;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 40px;
 }
 
 .cw-clue-item:hover {
@@ -126,7 +215,7 @@
 
 .cw-clue-item.active {
   background-color: rgba(0, 255, 204, 0.15);
-  border-left: 2px solid var(--secondary-color);
+  border-left: 3px solid var(--secondary-color);
 }
 
 .cw-clue-item.solved {
@@ -137,23 +226,25 @@
   font-family: var(--font-pixel);
   font-size: 0.25rem;
   color: var(--accent-color);
-  min-width: 16px;
+  min-width: 18px;
 }
 
 .cw-clue-text {
   font-family: var(--font-terminal);
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--text-color);
   line-height: 1.3;
 }
 
 .cw-clue-check {
   color: var(--neon-green);
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   margin-left: auto;
 }
 
-/* Responsive */
+/* ===== RESPONSIVE ===== */
+
+/* Tablet */
 @media (max-width: 700px) {
   .cw-layout {
     flex-direction: column;
@@ -161,16 +252,12 @@
   }
 
   .cw-grid {
-    grid-template-columns: repeat(var(--cw-size), 32px);
+    grid-template-columns: repeat(var(--cw-size), 38px);
   }
 
   .cw-cell {
-    width: 32px;
-    height: 32px;
-  }
-
-  .cw-cell-input {
-    font-size: 0.4rem;
+    width: 38px;
+    height: 38px;
   }
 
   .cw-clues {
@@ -178,56 +265,90 @@
     max-width: 100%;
     min-width: auto;
     width: 100%;
+    gap: 0.5rem;
   }
 
   .cw-clue-section {
     flex: 1;
+    padding: 0.5rem;
   }
 }
 
-@media (max-width: 400px) {
+/* Phone */
+@media (max-width: 480px) {
   .cw-grid {
-    grid-template-columns: repeat(var(--cw-size), 30px);
+    grid-template-columns: repeat(var(--cw-size), calc((100vw - 3rem) / var(--cw-size)));
   }
 
   .cw-cell {
-    width: 30px;
-    height: 30px;
+    width: calc((100vw - 3rem) / var(--cw-size));
+    height: calc((100vw - 3rem) / var(--cw-size));
     border-width: 1px;
   }
 
   .cw-cell-input {
-    font-size: 0.35rem;
+    font-size: 16px; /* Prevents iOS zoom */
+  }
+
+  .cw-cell-number {
+    font-size: 6px;
   }
 
   .cw-clues {
     flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cw-clue-section {
+    padding: 0.4rem;
   }
 
   .cw-clue-text {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+  }
+
+  .cw-clue-item {
+    min-height: 36px;
+    padding: 0.3rem;
   }
 
   .cw-puzzle-name {
     font-size: 0.35rem;
   }
+
+  .cw-active-clue {
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.5rem;
+  }
+
+  .cw-active-clue-text {
+    font-size: 1rem;
+  }
+
+  .cw-hint-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.5rem;
+    font-size: 0.28rem;
+  }
 }
 
-/* Touch optimization */
-.cw-cell {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
+/* Small phone */
+@media (max-width: 360px) {
+  .cw-cell-input {
+    font-size: 14px;
+  }
 
-.cw-cell-input {
-  -webkit-appearance: none;
-  border-radius: 0;
-  touch-action: manipulation;
-}
+  .cw-grid {
+    gap: 1px;
+  }
 
-.cw-clue-item {
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  min-height: 36px;
-  align-items: center;
+  .cw-active-clue-num {
+    font-size: 0.3rem;
+  }
+
+  .cw-clue-header {
+    font-size: 0.24rem;
+  }
 }
